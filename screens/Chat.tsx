@@ -47,12 +47,14 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         </SharedElement>
       </TouchableOpacity>
 
-      <SharedElement id={`messages.goBack`} style={{position: 'absolute'}}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
-          <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-      </SharedElement>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
+        <SharedElement id={`messages.goBack`}>
+          <View style={styles.backButtonWrap}>
+            <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
+            <Text style={styles.backButtonText}>Back</Text>
+          </View>
+        </SharedElement>
+      </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.head}>
         <SharedElement id={`messages.${id}.name`}>
@@ -86,9 +88,15 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    left: 8,
+    top: 0,
+  },
+  backButtonWrap: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 8,
+    paddingRight: 16,
+    paddingVertical: 8,
+    zIndex: 1,
   },
   backButtonText: {
     fontWeight: '400',
