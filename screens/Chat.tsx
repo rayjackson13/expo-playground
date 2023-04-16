@@ -23,24 +23,21 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
 
   const { id, avatar, name } = route.params as RouteParams;
 
-  const headerAnimation = FadeInLeft.delay(600).duration(500).springify().mass(1).stiffness(400).damping(20);
-  const footerAnimation = SlideInDown.duration(500).springify().mass(1).stiffness(200).damping(20);
-
   return (
     <>
-      <StatusBar style='light' />
+      <StatusBar style='inverted' animated />
 
       <SafeAreaView edges={['bottom']} style={styles.root}>
         <SharedElement id={`messages.${id}.avatar`}>
           <Image source={{ uri: avatar as string }} style={styles.avatar} />
         </SharedElement>
 
-        {/* <SharedElement id={`messages.goBack`}> */}
-          <AnimatedCTA entering={headerAnimation} onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
+        <SharedElement id={`messages.goBack`} style={{position: 'absolute'}}>
+          <AnimatedCTA onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
             <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
             <Text style={styles.backButtonText}>To Messages</Text>
           </AnimatedCTA>
-        {/* </SharedElement> */}
+        </SharedElement>
 
         <ScrollView contentContainerStyle={styles.head}>
           <SharedElement id={`messages.${id}.name`}>
@@ -55,7 +52,7 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         </ScrollView>
 
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
-          <Animated.View entering={footerAnimation} style={styles.footer}>
+          <Animated.View style={styles.footer}>
             <TextInput style={styles.input} placeholder="Type your message..." />
             <TouchableOpacity style={styles.send}>
               <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />

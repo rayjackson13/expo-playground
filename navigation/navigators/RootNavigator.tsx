@@ -10,8 +10,8 @@ const config: TransitionSpec = {
   animation: 'spring',
   config: {
     stiffness: 1000,
-    damping: 50,
-    mass: 1,
+    damping: 500,
+    mass: 2,
     overshootClamping: false,
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
@@ -43,11 +43,11 @@ export default function RootNavigator() {
               id: `messages.${id}.name`,
               animation: 'fade-in',
               resize: 'clip',
-            }
-            // {
-            //   id:`messages.goBack`,
-            //   animation: 'fade'
-            // },
+            },
+            {
+              id:`messages.goBack`,
+              animation: 'fade'
+            },
           ];
         }}
       />
