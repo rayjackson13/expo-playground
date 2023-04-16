@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ContactsScreen from '../../screens/Contacts';
 import { SharedElementSceneComponent, createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { TransitionConfig } from '../helpers/TransitionConfig';
+import SkiaScreen from '../../screens/Skia';
 
 const Tabs = createBottomTabNavigator();
 
@@ -33,9 +34,7 @@ const MessagesTab = wrapInSharedElementStack(MessagesScreen, 'MessagesScreen');
 
 export default function BottomTabNavigator() {
   return (
-    <Tabs.Navigator
-      initialRouteName="Messages"
-    >
+    <Tabs.Navigator initialRouteName="SkiaDemo">
       <Tabs.Screen
         name="Contacts"
         component={ContactsTab}
@@ -49,6 +48,14 @@ export default function BottomTabNavigator() {
         component={MessagesTab}
         options={{
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
+          tabBarShowLabel: false,
+        }}
+      />
+      <Tabs.Screen
+        name="SkiaDemo"
+        component={SkiaScreen}
+        options={{
+          tabBarIcon: (props) => <MaterialCommunityIcons name="rocket-launch-outline" {...props} />,
           tabBarShowLabel: false,
         }}
       />
