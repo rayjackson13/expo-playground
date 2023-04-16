@@ -6,6 +6,7 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 import BottomTabNavigator from './BottomTabNavigator';
 import ContactDetailsScreen from '../../screens/ContactDetails';
 import { TransitionConfig } from '../helpers/TransitionConfig';
+import Header from '../../components/Header';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -13,6 +14,7 @@ export default function RootNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
+        header: (props) => <Header hasBorder {...props} />,
         cardOverlayEnabled: false,
         cardShadowEnabled: true,
         transitionSpec: {
@@ -49,7 +51,7 @@ export default function RootNavigator() {
       />
       <Stack.Screen 
         name="Chat" 
-        component={ChatScreen} 
+        component={ChatScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen 

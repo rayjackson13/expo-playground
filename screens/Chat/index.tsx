@@ -2,11 +2,11 @@ import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpac
 import React from 'react'
 import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
 import MessageList from '../../components/MessageList';
+import Header from '../../components/Header';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -16,18 +16,11 @@ type RouteParams = ParamListBase & {
 }
 
 const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
-  const insets = useSafeAreaInsets();
-
   const { id, avatar, name, lastMessage } = route.params as RouteParams;
 
   return (
-    <SafeAreaView edges={['top', 'bottom']} style={styles.root}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButtonWrap}>
-          <MaterialIcons name="arrow-back-ios" color={Colors.light.text} size={16} />
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-
+    <>
+      <Header hasBorder route={route}>
         <TouchableOpacity
           activeOpacity={.8}
           style={styles.info}
@@ -41,19 +34,21 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
             <Text style={styles.name}>{name}</Text>
           </SharedElement>
         </TouchableOpacity>
+      </Header>
+
+      <View style={styles.root}>
+        <MessageList lastMessage={lastMessage} chatId={id} />
+
+        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
+          <View style={styles.footer}>
+            <TextInput style={styles.input} placeholder="Type your message..." />
+            <TouchableOpacity style={styles.send}>
+              <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </View>
-
-      <MessageList lastMessage={lastMessage} chatId={id} />
-
-      <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
-        <View style={styles.footer}>
-          <TextInput style={styles.input} placeholder="Type your message..." />
-          <TouchableOpacity style={styles.send}>
-            <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    </>
   )
 }
 

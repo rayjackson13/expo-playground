@@ -7,6 +7,7 @@ import { SharedElementSceneComponent, createSharedElementStackNavigator } from '
 import { TransitionConfig } from '../helpers/TransitionConfig';
 import SkiaScreen from '../../screens/Skia';
 import SplashScreen from '../../screens/Splash';
+import Header from '../../components/Header';
 
 const Tabs = createBottomTabNavigator();
 
@@ -35,11 +36,17 @@ const MessagesTab = wrapInSharedElementStack(MessagesScreen, 'MessagesScreen');
 
 export default function BottomTabNavigator() {
   return (
-    <Tabs.Navigator initialRouteName="Contacts">
+    <Tabs.Navigator
+      initialRouteName="Contacts"
+      screenOptions={{
+        header: (props) => <Header hasBorder {...props} />
+      }}
+    >
       <Tabs.Screen
         name="Contacts"
         component={ContactsTab}
         options={{
+          header: (props) => <Header {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="account-group-outline" {...props} />,
           tabBarShowLabel: false,
         }}
@@ -48,6 +55,7 @@ export default function BottomTabNavigator() {
         name="Messages"
         component={MessagesTab}
         options={{
+          headerShown: false,
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
           tabBarShowLabel: false,
         }}

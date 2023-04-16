@@ -2,6 +2,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../constants/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Message = {
   id: number;
@@ -55,14 +56,14 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
   )
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top']} style={styles.container}>
       <FlatList
         data={messages}
         renderItem={renderItem}
         style={styles.list}
         ItemSeparatorComponent={renderDivider}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

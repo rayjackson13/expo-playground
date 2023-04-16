@@ -5,7 +5,7 @@ export default {
   light: {
     text: '#000',
     secondary: '#515151',
-    border: '#e5e5e5',
+    border: '#ececec',
     background: '#fff',
     tint: tintColorLight,
     tabIconDefault: '#ccc',
