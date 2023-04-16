@@ -6,6 +6,7 @@ import ContactsScreen from '../../screens/Contacts';
 import { SharedElementSceneComponent, createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { TransitionConfig } from '../helpers/TransitionConfig';
 import SkiaScreen from '../../screens/Skia';
+import SplashScreen from '../../screens/Splash';
 
 const Tabs = createBottomTabNavigator();
 
@@ -55,7 +56,7 @@ export default function BottomTabNavigator() {
         name="SkiaDemo"
         component={SkiaScreen}
         options={{
-          tabBarIcon: (props) => <MaterialCommunityIcons name="rocket-launch-outline" {...props} />,
+          tabBarIcon: (props) => <MaterialCommunityIcons name="draw-pen" {...props} />,
           tabBarShowLabel: false,
         }}
       />
