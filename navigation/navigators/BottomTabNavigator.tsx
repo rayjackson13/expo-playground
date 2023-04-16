@@ -4,6 +4,7 @@ import MessagesScreen from '../../screens/Messages';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ContactsScreen from '../../screens/Contacts';
 import { SharedElementSceneComponent, createSharedElementStackNavigator } from 'react-navigation-shared-element';
+import { TransitionConfig } from '../helpers/TransitionConfig';
 
 const Tabs = createBottomTabNavigator();
 
@@ -14,7 +15,13 @@ const wrapInSharedElementStack = (
   const SharedStack = createSharedElementStackNavigator();
   return () => (
     <SharedStack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{
+        headerShown: false,
+        transitionSpec: {
+          open: TransitionConfig,
+          close: TransitionConfig,
+        }
+      }}
       initialRouteName={name}>
       <SharedStack.Screen name={name} component={Screen} />
     </SharedStack.Navigator>

@@ -1,7 +1,6 @@
 import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SharedElement } from 'react-navigation-shared-element';
 import Colors from '../../constants/Colors';
 
 type Message = {
@@ -39,14 +38,10 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
 
     return (
       <TouchableOpacity style={styles.listItem} onPress={onPress}>
-        <SharedElement id={`messages.${id}.avatar`}>
-          <Image source={{ uri: avatar }} style={styles.listItemImage} />
-        </SharedElement>
+        <Image source={{ uri: avatar }} style={styles.listItemImage} />
 
         <View style={styles.listItemBody}>
-          <SharedElement id={`messages.${id}.name`}>
-            <Text style={styles.listItemName}>{name}</Text>
-          </SharedElement>
+          <Text style={styles.listItemName}>{name}</Text>
           <Text style={styles.listItemText} numberOfLines={2}>{lastMessage}</Text>
         </View>
       </TouchableOpacity>

@@ -1,13 +1,11 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { setStatusBarStyle } from 'expo-status-bar';
-import { ParamListBase, useFocusEffect } from '@react-navigation/native';
+import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
-import { LinearGradient } from 'expo-linear-gradient';
 import MessageList from '../../components/MessageList';
 
 type RouteParams = ParamListBase & {
@@ -22,46 +20,28 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
 
   const { id, avatar, name, lastMessage } = route.params as RouteParams;
 
-  useFocusEffect(() => {
-    setStatusBarStyle('inverted');
-    return () => {
-      setStatusBarStyle('dark');
-    }
-  });
-
   return (
-    <SafeAreaView edges={['bottom']} style={styles.root}>
-      <TouchableOpacity
-        activeOpacity={.8}
-        style={styles.avatarWrap}
-        onPress={() => navigation.navigate('PhotoPreview', { uri: avatar })}
-      >
-        <SharedElement id={`messages.${id}.avatar`} style={StyleSheet.absoluteFill}>
-          <Image source={{ uri: avatar as string }} style={[StyleSheet.absoluteFill]} />
-        </SharedElement>
+    <SafeAreaView edges={['top', 'bottom']} style={styles.root}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButtonWrap}>
+          <MaterialIcons name="arrow-back-ios" color={Colors.light.text} size={16} />
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
 
-        <SharedElement id={`messages.gradient`} style={StyleSheet.absoluteFill}>
-          <LinearGradient
-            colors={['rgba(0,0,0,.2)', 'transparent', 'rgba(0,0,0,.3)']}
-            style={StyleSheet.absoluteFill}
-          />
-        </SharedElement>
+        <TouchableOpacity
+          activeOpacity={.8}
+          style={styles.info}
+          onPress={() => navigation.navigate('ContactDetails', { avatar, id, name })}
+        >
+          <SharedElement id={`contact.${id}.avatar`}>
+            <Image source={{ uri: avatar as string }} style={styles.avatar} />
+          </SharedElement>
 
-        <View style={styles.head}>
-          <SharedElement id={`messages.${id}.name`}>
+          <SharedElement id={`contact.${id}.name`}>
             <Text style={styles.name}>{name}</Text>
           </SharedElement>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
-        <SharedElement id={`messages.goBack`}>
-          <View style={styles.backButtonWrap}>
-            <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
-            <Text style={styles.backButtonText}>Back</Text>
-          </View>
-        </SharedElement>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
 
       <MessageList lastMessage={lastMessage} chatId={id} />
 
@@ -84,39 +64,43 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.light.background,
   },
-  backButton: {
-    position: 'absolute',
-    top: 0,
-  },
-  backButtonWrap: {
+  header: {
+    position: 'relative',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 8,
-    paddingRight: 16,
+    justifyContent: 'center',
+    height: 44,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.border,
+  },
+  backButtonWrap: {
+    position: 'absolute',
+    left: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
     paddingVertical: 8,
     zIndex: 1,
   },
   backButtonText: {
     fontWeight: '400',
     fontSize: 16,
-    color: Colors.dark.text,
+    color: Colors.light.text,
   },
-  avatarWrap: {
-    width: '100%',
-    height: 300,
-    position: 'relative',
+  info: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  head: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 16,
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 32,
+    marginRight: 8,
   },
   name: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
-    color: Colors.light.background,
+    color: Colors.light.text,
   },
   footer: {
     paddingHorizontal: 16,
