@@ -6,6 +6,8 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { SharedElement } from 'react-navigation-shared-element';
+import Animated, { FadeIn, FadeInLeft, SlideInDown, SlideInLeft, SlideInUp } from 'react-native-reanimated';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -14,26 +16,37 @@ type RouteParams = ParamListBase & {
   lastMessage: string;
 }
 
+const AnimatedCTA = Animated.createAnimatedComponent(TouchableOpacity);
+
 const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
-  console.log(route.params)
   const insets = useSafeAreaInsets();
 
-  const { id, avatar, name, lastMessage } = route.params as RouteParams;
+  const { id, avatar, name } = route.params as RouteParams;
+
+  const headerAnimation = FadeInLeft.delay(600).duration(500).springify().mass(1).stiffness(400).damping(20);
+  const footerAnimation = SlideInDown.duration(500).springify().mass(1).stiffness(200).damping(20);
 
   return (
     <>
       <StatusBar style='light' />
 
       <SafeAreaView edges={['bottom']} style={styles.root}>
-        <Image source={{ uri: avatar as string }} style={styles.avatar} />
+        <SharedElement id={`messages.${id}.avatar`}>
+          <Image source={{ uri: avatar as string }} style={styles.avatar} />
+        </SharedElement>
 
-        <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
-          <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
-          <Text style={styles.backButtonText}>To Messages</Text>
-        </TouchableOpacity>
+        {/* <SharedElement id={`messages.goBack`}> */}
+          <AnimatedCTA entering={headerAnimation} onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
+            <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
+            <Text style={styles.backButtonText}>To Messages</Text>
+          </AnimatedCTA>
+        {/* </SharedElement> */}
 
         <ScrollView contentContainerStyle={styles.head}>
-          <Text style={styles.name}>{name}</Text>
+          <SharedElement id={`messages.${id}.name`}>
+            <Text style={styles.name}>{name}</Text>
+          </SharedElement>
+
           <Text style={styles.start}>
             This is the start of your conversation with this person.
             {'\n'}
@@ -41,11 +54,13 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
           </Text>
         </ScrollView>
 
-        <KeyboardAvoidingView behavior='padding' style={styles.footer} keyboardVerticalOffset={8}>
-          <TextInput style={styles.input} placeholder="Type your message..." />
-          <TouchableOpacity style={styles.send}>
-            <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
-          </TouchableOpacity>
+        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
+          <Animated.View entering={footerAnimation} style={styles.footer}>
+            <TextInput style={styles.input} placeholder="Type your message..." />
+            <TouchableOpacity style={styles.send}>
+              <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
+            </TouchableOpacity>
+          </Animated.View>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </>

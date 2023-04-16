@@ -1,6 +1,7 @@
 import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
 
 type Message = {
   id: number;
@@ -37,10 +38,14 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
 
     return (
       <TouchableOpacity style={styles.listItem} onPress={onPress}>
-        <Image source={{ uri: avatar }} style={styles.listItemImage} />
+        <SharedElement id={`messages.${id}.avatar`}>
+          <Image source={{ uri: avatar }} style={styles.listItemImage} />
+        </SharedElement>
 
         <View style={styles.listItemBody}>
-          <Text style={styles.listItemName}>{name}</Text>
+          <SharedElement id={`messages.${id}.name`}>
+            <Text style={styles.listItemName}>{name}</Text>
+          </SharedElement>
           <Text style={styles.listItemText} numberOfLines={2}>{lastMessage}</Text>
         </View>
       </TouchableOpacity>
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listItemName: {
-    fontWeight: '600',
+    fontWeight: '400',
     fontSize: 14,
     marginBottom: 4,
   },
