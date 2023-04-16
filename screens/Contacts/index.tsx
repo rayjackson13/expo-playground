@@ -3,17 +3,10 @@ import Colors from '../../constants/Colors';
 import Contacts from '../../data/contacts.json';
 import ContactListItem from './Item';
 import ContactSearch from './Search';
-import Animated, { Extrapolate, interpolate, runOnJS, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withDecay, withSpring, withTiming } from 'react-native-reanimated';
 import { useState } from 'react';
+import { Contact } from '../../constants/types';
+import { FlatList } from 'react-native-gesture-handler';
 
-type Contact = {
-  id: number;
-  avatar: string;
-  name: string;
-  online?: boolean;
-}
-
-const SEARCH_HEIGHT = 56;
 
 export default function ContactsScreen() {
   const [searchText, setSearchText] = useState('');
@@ -31,7 +24,7 @@ export default function ContactsScreen() {
     <View style={styles.container}>
       <ContactSearch onChange={setSearchText} value={searchText} />
 
-      <Animated.FlatList
+      <FlatList
         bounces
         scrollEventThrottle={16}
         data={items}

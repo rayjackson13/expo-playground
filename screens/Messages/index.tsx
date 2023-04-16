@@ -3,6 +3,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import StoriesView from './StoriesView';
 
 type Message = {
   id: number;
@@ -57,6 +58,8 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
 
   return (
     <View style={styles.container}>
+      <StoriesView />
+
       <FlatList
         data={messages}
         renderItem={renderItem}
