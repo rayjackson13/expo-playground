@@ -3,6 +3,8 @@ import { createSharedElementStackNavigator } from 'react-navigation-shared-eleme
 import MessagesScreen from '../../screens/Messages';
 import ChatScreen from '../../screens/Chat';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
+import PhotoPreviewScreen from '../../screens/PhotoPreview';
+import { CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -34,8 +36,12 @@ export default function RootNavigator() {
             close: config,
           }
         }}
-        sharedElements={(route, otherRoute, isShowing) => {
+        sharedElements={(route, otherRoute, showing) => {
           const { id } = route.params;
+
+          if (!['Messages', 'Chat'].includes(otherRoute.name)) {
+            return [];
+          }
 
           return [
             `messages.${id}.avatar`,
@@ -45,10 +51,26 @@ export default function RootNavigator() {
               resize: 'clip',
             },
             {
-              id:`messages.goBack`,
-              animation: 'fade'
+              id: 'messages.gradient',
+              animation: 'fade',
+            },
+            {
+              id:'messages.goBack',
+              animation: 'fade',
             },
           ];
+        }}
+      />
+      <Stack.Screen 
+        name="PhotoPreview" 
+        component={PhotoPreviewScreen} 
+        options={{
+          presentation: 'transparentModal',
+          headerShown: false,
+          cardOverlayEnabled: false,
+          cardShadowEnabled: false,
+          gestureEnabled: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
         }}
       />
     </Stack.Navigator>

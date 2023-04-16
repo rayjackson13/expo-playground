@@ -1,13 +1,13 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Colors from '../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
-import { ParamListBase } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
+import { ParamListBase, useFocusEffect } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
-import Animated, { FadeIn, FadeInLeft, SlideInDown, SlideInLeft, SlideInUp } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -16,51 +16,65 @@ type RouteParams = ParamListBase & {
   lastMessage: string;
 }
 
-const AnimatedCTA = Animated.createAnimatedComponent(TouchableOpacity);
-
 const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
   const insets = useSafeAreaInsets();
 
   const { id, avatar, name } = route.params as RouteParams;
 
+  useFocusEffect(() => {
+    setStatusBarStyle('inverted');
+    return () => {
+      setStatusBarStyle('dark');
+    }
+  });
+
   return (
-    <>
-      <StatusBar style='inverted' animated />
-
-      <SafeAreaView edges={['bottom']} style={styles.root}>
-        <SharedElement id={`messages.${id}.avatar`}>
-          <Image source={{ uri: avatar as string }} style={styles.avatar} />
+    <SafeAreaView edges={['bottom']} style={styles.root}>
+      <TouchableOpacity
+        activeOpacity={.8}
+        style={styles.avatarWrap}
+        onPress={() => navigation.navigate('PhotoPreview', { uri: avatar })}
+      >
+        <SharedElement id={`messages.${id}.avatar`} style={StyleSheet.absoluteFill}>
+          <Image source={{ uri: avatar as string }} style={StyleSheet.absoluteFill} />
         </SharedElement>
 
-        <SharedElement id={`messages.goBack`} style={{position: 'absolute'}}>
-          <AnimatedCTA onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
-            <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
-            <Text style={styles.backButtonText}>To Messages</Text>
-          </AnimatedCTA>
+        <SharedElement id={`messages.gradient`} style={StyleSheet.absoluteFill}>
+          <LinearGradient
+            colors={['rgba(0,0,0,.2)', 'transparent']}
+            style={StyleSheet.absoluteFill}
+          />
+        </SharedElement>
+      </TouchableOpacity>
+
+      <SharedElement id={`messages.goBack`} style={{position: 'absolute'}}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
+          <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      </SharedElement>
+
+      <ScrollView contentContainerStyle={styles.head}>
+        <SharedElement id={`messages.${id}.name`}>
+          <Text style={styles.name}>{name}</Text>
         </SharedElement>
 
-        <ScrollView contentContainerStyle={styles.head}>
-          <SharedElement id={`messages.${id}.name`}>
-            <Text style={styles.name}>{name}</Text>
-          </SharedElement>
+        <Text style={styles.start}>
+          This is the start of your conversation with this person.
+          {'\n'}
+          Please respect our community guidelines.
+        </Text>
+      </ScrollView>
 
-          <Text style={styles.start}>
-            This is the start of your conversation with this person.
-            {'\n'}
-            Please respect our community guidelines.
-          </Text>
-        </ScrollView>
-
-        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
-          <Animated.View style={styles.footer}>
-            <TextInput style={styles.input} placeholder="Type your message..." />
-            <TouchableOpacity style={styles.send}>
-              <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
-            </TouchableOpacity>
-          </Animated.View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </>
+      <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
+        <View style={styles.footer}>
+          <TextInput style={styles.input} placeholder="Type your message..." />
+          <TouchableOpacity style={styles.send}>
+            <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   )
 }
 
@@ -72,7 +86,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    left: 0,
+    left: 8,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -86,9 +100,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 32,
   },
-  avatar: {
+  avatarWrap: {
     width: '100%',
     height: 200,
+    position: 'relative',
   },
   name: {
     fontSize: 18,
