@@ -20,15 +20,11 @@ export default function PhotoPreviewScreen({ route, navigation }: StackScreenPro
     const value = Math.abs(position.value) / SWIPE_THRESHOLD;
     
     return value > 1 ? 0 : 1 - value;
-  })
-
-  console.log(position.value);
+  });
 
   const gesture = Gesture.Pan()
     .onUpdate(({ translationY }) => {
       'worklet';
-
-      console.log('update', translationY);
 
       position.value = translationY;
     })

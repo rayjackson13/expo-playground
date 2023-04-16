@@ -2,6 +2,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
+import Colors from '../constants/Colors';
 
 type Message = {
   id: number;
@@ -14,7 +15,7 @@ const messages: Message[] = [
   {
     id: 0,
     avatar: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-    name: 'Brian Cranston',
+    name: 'Bryan Cranston',
     lastMessage: 'Hey Jesse, we need to cook! I\'m already waiting for you in the RV. Bring equipment with you!'
   },
   {
@@ -86,8 +87,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   listItemImage: {
-    width: 56,
-    height: 56,
+    width: 64,
+    height: 64,
     borderRadius: 56,
     marginRight: 16,
   },
@@ -95,13 +96,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listItemName: {
-    fontWeight: '400',
-    fontSize: 14,
+    fontWeight: '500',
+    fontSize: 16,
     marginBottom: 4,
+    color: Colors.light.text,
   },
   listItemText: {
-    fontSize: 14,
-    color: '#515151',
+    fontSize: 16,
+    color: Colors.light.secondary,
   },
   separator: {
     padding: 16,
@@ -111,6 +113,6 @@ const styles = StyleSheet.create({
   },
   separatorLine: {
     height: 1,
-    backgroundColor: 'lightgray',
+    backgroundColor: Colors.light.border,
   }
 });

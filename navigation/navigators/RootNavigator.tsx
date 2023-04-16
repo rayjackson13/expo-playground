@@ -46,16 +46,16 @@ export default function RootNavigator() {
           return [
             `messages.${id}.avatar`,
             {
+              id: 'messages.gradient',
+              animation: 'fade',
+            },
+            {
               id: `messages.${id}.name`,
               animation: 'fade-in',
               resize: 'clip',
             },
             {
-              id: 'messages.gradient',
-              animation: 'fade',
-            },
-            {
-              id:'messages.goBack',
+              id: 'messages.goBack',
               animation: 'fade',
             },
           ];

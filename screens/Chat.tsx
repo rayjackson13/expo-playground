@@ -8,6 +8,7 @@ import { ParamListBase, useFocusEffect } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
 import { LinearGradient } from 'expo-linear-gradient';
+import MessageList from '../components/MessageList';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -19,7 +20,7 @@ type RouteParams = ParamListBase & {
 const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
   const insets = useSafeAreaInsets();
 
-  const { id, avatar, name } = route.params as RouteParams;
+  const { id, avatar, name, lastMessage } = route.params as RouteParams;
 
   useFocusEffect(() => {
     setStatusBarStyle('inverted');
@@ -36,15 +37,21 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         onPress={() => navigation.navigate('PhotoPreview', { uri: avatar })}
       >
         <SharedElement id={`messages.${id}.avatar`} style={StyleSheet.absoluteFill}>
-          <Image source={{ uri: avatar as string }} style={StyleSheet.absoluteFill} />
+          <Image source={{ uri: avatar as string }} style={[StyleSheet.absoluteFill]} />
         </SharedElement>
 
         <SharedElement id={`messages.gradient`} style={StyleSheet.absoluteFill}>
           <LinearGradient
-            colors={['rgba(0,0,0,.2)', 'transparent']}
+            colors={['rgba(0,0,0,.2)', 'transparent', 'rgba(0,0,0,.3)']}
             style={StyleSheet.absoluteFill}
           />
         </SharedElement>
+
+        <View style={styles.head}>
+          <SharedElement id={`messages.${id}.name`}>
+            <Text style={styles.name}>{name}</Text>
+          </SharedElement>
+        </View>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
@@ -56,17 +63,7 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         </SharedElement>
       </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={styles.head}>
-        <SharedElement id={`messages.${id}.name`}>
-          <Text style={styles.name}>{name}</Text>
-        </SharedElement>
-
-        <Text style={styles.start}>
-          This is the start of your conversation with this person.
-          {'\n'}
-          Please respect our community guidelines.
-        </Text>
-      </ScrollView>
+      <MessageList lastMessage={lastMessage} chatId={id} />
 
       <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
         <View style={styles.footer}>
@@ -85,6 +82,7 @@ export default ChatScreen
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: Colors.light.background,
   },
   backButton: {
     position: 'absolute',
@@ -103,35 +101,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.dark.text,
   },
-  head: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 32,
-  },
   avatarWrap: {
     width: '100%',
-    height: 200,
+    height: 300,
     position: 'relative',
   },
-  name: {
-    fontSize: 18,
-    fontWeight: '400',
-    color: '#2e2e2e',
-    marginBottom: 16,
-    textAlign: 'center',
+  head: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 16,
   },
-  start: {
-    fontSize: 14,
-    fontWeight: '300',
-    color: "#515151",
-    textAlign: 'center',
+  name: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: Colors.light.background,
   },
   footer: {
     paddingHorizontal: 16,
     flexDirection: 'row',
     borderTopWidth: 1,
     paddingVertical: 8,
-    borderColor: '#c3c3c3'
+    borderColor: Colors.light.border
   },
   input: {
     flex: 1,
