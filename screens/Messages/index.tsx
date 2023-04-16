@@ -2,7 +2,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 
 type Message = {
   id: number;

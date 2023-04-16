@@ -1,6 +1,6 @@
 import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { setStatusBarStyle } from 'expo-status-bar';
@@ -8,7 +8,7 @@ import { ParamListBase, useFocusEffect } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
 import { LinearGradient } from 'expo-linear-gradient';
-import MessageList from '../components/MessageList';
+import MessageList from '../../components/MessageList';
 
 type RouteParams = ParamListBase & {
   id: number;

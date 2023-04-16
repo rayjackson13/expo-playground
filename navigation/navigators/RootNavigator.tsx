@@ -4,7 +4,10 @@ import MessagesScreen from '../../screens/Messages';
 import ChatScreen from '../../screens/Chat';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import PhotoPreviewScreen from '../../screens/PhotoPreview';
-import { CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
+import { CardStyleInterpolators } from '@react-navigation/stack';
+import BottomTabNavigator from './BottomTabNavigator';
+import ContactDetailsScreen from '../../screens/ContactDetails';
+import ContactsScreen from '../../screens/Contacts';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -18,26 +21,48 @@ const config: TransitionSpec = {
 
 export default function RootNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Messages" component={MessagesScreen} />
+    <Stack.Navigator
+      screenOptions={{
+        cardOverlayEnabled: false,
+        cardShadowEnabled: true,
+        transitionSpec: {
+          open: config,
+          close: config,
+        }
+      }}
+    >
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen 
+        name="ContactDetails" 
+        component={ContactDetailsScreen} 
+        options={{ headerShown: false }}
+        sharedElements={(route) => {
+          const { id } = route.params;
+
+          return [
+            `contact.${id}.avatar`,
+            {
+              id: 'contact.gradient',
+              animation: 'fade',
+            },
+            {
+              id: `contact.${id}.name`,
+              animation: 'fade-in',
+              resize: 'clip',
+            },
+            {
+              id: 'contact.goBack',
+              animation: 'fade',
+            },
+          ];
+        }}
+      />
       <Stack.Screen 
         name="Chat" 
         component={ChatScreen} 
-        options={{
-          headerShown: false,
-          cardOverlayEnabled: false,
-          cardShadowEnabled: true,
-          transitionSpec: {
-            open: config,
-            close: config,
-          }
-        }}
+        options={{ headerShown: false }}
         sharedElements={(route, otherRoute, showing) => {
           const { id } = route.params;
-
-          if (!['Messages', 'Chat'].includes(otherRoute.name)) {
-            return [];
-          }
 
           return [
             `messages.${id}.avatar`,
