@@ -74,6 +74,7 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.light.background,
   },
   title: {
     fontSize: 20,
