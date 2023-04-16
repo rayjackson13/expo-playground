@@ -35,7 +35,7 @@ const MessagesTab = wrapInSharedElementStack(MessagesScreen, 'MessagesScreen');
 
 export default function BottomTabNavigator() {
   return (
-    <Tabs.Navigator initialRouteName="SkiaDemo">
+    <Tabs.Navigator initialRouteName="Contacts">
       <Tabs.Screen
         name="Contacts"
         component={ContactsTab}
