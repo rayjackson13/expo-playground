@@ -1,14 +1,65 @@
-import { StyleSheet } from 'react-native';
+import { FlatList, Image, ListRenderItem, StyleSheet, TouchableOpacity } from 'react-native';
 
-import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
+import { Link } from 'expo-router';
+
+type Message = {
+  id: number;
+  avatar: string;
+  name: string;
+  lastMessage: string;
+}
+
+const messages: Message[] = [
+  {
+    id: 0,
+    avatar: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    name: 'Brian Cranston',
+    lastMessage: 'Hey Jesse, we need to cook! I\'m already waiting for you in the RV. Bring equipment with you!'
+  },
+  {
+    id: 1,
+    avatar: 'https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1453&q=80',
+    name: 'Sia Venti',
+    lastMessage: 'Hey! Where were you last night?'
+  },
+];
 
 export default function TabOneScreen() {
+  const renderItem: ListRenderItem<Message> = ({ item }) => {
+    const urlParams = new URLSearchParams();
+    urlParams.append('avatar', item.avatar);
+    urlParams.append('name', item.name);
+    urlParams.append('lastMessage', item.lastMessage);
+
+    return (
+      <Link href={`chat/${item.id}?${urlParams.toString()}`} asChild>
+        <TouchableOpacity style={styles.listItem} >
+          <Image source={{ uri: item.avatar }} style={styles.listItemImage} />
+
+          <View style={styles.listItemBody}>
+            <Text style={styles.listItemName}>{item.name}</Text>
+            <Text style={styles.listItemText} numberOfLines={2}>{item.lastMessage}</Text>
+          </View>
+        </TouchableOpacity>
+      </Link>
+    )
+  }
+
+  const renderDivider = () => (
+    <View style={styles.separator}>
+      <View style={styles.separatorLine} />
+    </View>
+  )
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <FlatList
+        data={messages}
+        renderItem={renderItem}
+        style={styles.list}
+        ItemSeparatorComponent={renderDivider}
+      />
     </View>
   );
 }
@@ -16,16 +67,44 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  list: {
+    paddingVertical: 16,
   },
+  listItem: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+  },
+  listItemImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 56,
+    marginRight: 16,
+  },
+  listItemBody: {
+    flex: 1,
+  },
+  listItemName: {
+    fontWeight: '600',
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  listItemText: {
+    fontSize: 14,
+    color: '#515151',
+  },
+  separator: {
+    padding: 16,
+    paddingVertical: 8,
+    paddingLeft: 16 + 56 + 16,
+    flexShrink: 0,
+  },
+  separatorLine: {
+    height: 1,
+    backgroundColor: 'lightgray',
+  }
 });
