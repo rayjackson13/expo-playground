@@ -1,7 +1,6 @@
-import { FlatList, Image, ListRenderItem, StyleSheet, TouchableOpacity } from 'react-native';
-
-import { Text, View } from '../../components/Themed';
-import { Link } from 'expo-router';
+import { ParamListBase } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Message = {
   id: number;
@@ -25,24 +24,26 @@ const messages: Message[] = [
   },
 ];
 
-export default function TabOneScreen() {
+export default function MessagesScreen({ navigation }: StackScreenProps<ParamListBase>) {
   const renderItem: ListRenderItem<Message> = ({ item }) => {
+    const { id, name, avatar, lastMessage } = item;
     const urlParams = new URLSearchParams();
-    urlParams.append('avatar', item.avatar);
-    urlParams.append('name', item.name);
-    urlParams.append('lastMessage', item.lastMessage);
+    urlParams.append('avatar', avatar);
+    urlParams.append('name', name);
+    urlParams.append('lastMessage', lastMessage);
+    const onPress = () => navigation.navigate('Chat', {
+      id, name, avatar, lastMessage
+    });
 
     return (
-      <Link href={`chat/${item.id}?${urlParams.toString()}`} asChild>
-        <TouchableOpacity style={styles.listItem} >
-          <Image source={{ uri: item.avatar }} style={styles.listItemImage} />
+      <TouchableOpacity style={styles.listItem} onPress={onPress}>
+        <Image source={{ uri: avatar }} style={styles.listItemImage} />
 
-          <View style={styles.listItemBody}>
-            <Text style={styles.listItemName}>{item.name}</Text>
-            <Text style={styles.listItemText} numberOfLines={2}>{item.lastMessage}</Text>
-          </View>
-        </TouchableOpacity>
-      </Link>
+        <View style={styles.listItemBody}>
+          <Text style={styles.listItemName}>{name}</Text>
+          <Text style={styles.listItemText} numberOfLines={2}>{lastMessage}</Text>
+        </View>
+      </TouchableOpacity>
     )
   }
 

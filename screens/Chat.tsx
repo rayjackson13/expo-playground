@@ -1,19 +1,24 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Redirect, useRouter, useSearchParams } from 'expo-router';
-import Colors from '../../constants/Colors';
+import Colors from '../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { ParamListBase } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const ChatScreen = () => {
-  const { avatar, id, lastMessage, name } = useSearchParams();
+type RouteParams = ParamListBase & {
+  id: number;
+  avatar: string;
+  name: string;
+  lastMessage: string;
+}
+
+const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
+  console.log(route.params)
   const insets = useSafeAreaInsets();
-  const router = useRouter();
 
-  if (!id) {
-    return <Redirect href={'/'} />
-  }
+  const { id, avatar, name, lastMessage } = route.params as RouteParams;
 
   return (
     <>
@@ -22,7 +27,7 @@ const ChatScreen = () => {
       <SafeAreaView edges={['bottom']} style={styles.root}>
         <Image source={{ uri: avatar as string }} style={styles.avatar} />
 
-        <TouchableOpacity onPress={() => router.back()} style={[styles.backButton, { top: insets.top }]}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
           <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
           <Text style={styles.backButtonText}>To Messages</Text>
         </TouchableOpacity>
