@@ -56,14 +56,14 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
   )
 
   return (
-    <SafeAreaView edges={['top']} style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={messages}
         renderItem={renderItem}
         style={styles.list}
         ItemSeparatorComponent={renderDivider}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,9 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from '../constants/Colors';
-import { StackHeaderProps } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -12,10 +10,11 @@ type Props = {
   route: RouteProp<any>;
   hasBorder?: boolean;
   children?: React.ReactNode;
+  canGoBack?: boolean;
 };
 
-export default function Header({ route, hasBorder, children, ...props }: Props) {
-  const { canGoBack, goBack } = useNavigation();
+export default function Header({ route, hasBorder, children, canGoBack }: Props) {
+  const { goBack } = useNavigation();
   const renderBody = () => {
     if (!children) {
       return <Text style={styles.title}>{route.name}</Text>;
@@ -31,7 +30,7 @@ export default function Header({ route, hasBorder, children, ...props }: Props) 
 
           <View style={[StyleSheet.absoluteFill, styles.buttonRow]}>
             <View style={styles.buttonWrap}>
-              {canGoBack() && (
+              {canGoBack && (
                 <TouchableOpacity style={styles.button} onPress={() => goBack()}>
                   <MaterialIcons name="arrow-back-ios" size={18} color={Colors.light.text} />
                   <Text style={styles.buttonText}>Back</Text>

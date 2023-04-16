@@ -20,7 +20,7 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
 
   return (
     <>
-      <Header hasBorder route={route}>
+      <Header hasBorder canGoBack route={route}>
         <TouchableOpacity
           activeOpacity={.8}
           style={styles.info}
