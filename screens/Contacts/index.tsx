@@ -1,14 +1,17 @@
-import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Keyboard, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import Contacts from '../../data/contacts.json';
 import ContactListItem from './Item';
-import ContactSearch from './Search';
 import { useEffect, useRef, useState } from 'react';
 import { Contact } from '../../constants/types';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useSharedValue } from 'react-native-reanimated';
 import Tip from './Tip';
+import { StackScreenProps } from '@react-navigation/stack';
+import ContactsHeader from './Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Constants } from './constants';
 
-export default function ContactsScreen() {
+export default function ContactsScreen({ route }: StackScreenProps<{}>) {
   const [searchText, setSearchText] = useState('');
   const scrollOffset = useSharedValue(0);
   const headerVisible = useSharedValue(true);
@@ -30,6 +33,7 @@ export default function ContactsScreen() {
 
   const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollOffset.value = nativeEvent.contentOffset.y;
+    Keyboard.dismiss();
   };
 
   const scrollTo = (offset: number): void => 
@@ -38,14 +42,14 @@ export default function ContactsScreen() {
   const onDragEnd = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y: offset } = nativeEvent.contentOffset;
 
-    if (offset <= 56 / 3) {
+    if (offset <= Constants.SearchHeight / 3) {
       scrollTo(0);
       setHeaderVisible(false);
       return;
     }
 
-    if (offset <= 56) {
-      scrollTo(56);
+    if (offset <= Constants.SearchHeight) {
+      scrollTo(Constants.SearchHeight);
       setHeaderVisible(true);
     }
   };
@@ -54,28 +58,32 @@ export default function ContactsScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      scrollTo(56);
+      scrollTo(Constants.SearchHeight);
     }, 100);
   }, [])
 
   return (
-    <View style={styles.container}>
-      <ContactSearch onChange={setSearchText} value={searchText} offset={scrollOffset} />
-
-      <FlatList
-        bounces
-        scrollEventThrottle={16}
-        data={items}
-        renderItem={renderItem}
-        style={styles.list}
-        contentContainerStyle={styles.listInner}
-        ItemSeparatorComponent={renderDivider}
-        ListHeaderComponent={renderHeader}
-        onScroll={onScroll}
-        onScrollEndDrag={onDragEnd}
-        ref={scrollRef}
+    <>
+      <ContactsHeader
+        {...{ route, setSearchText, searchText, scrollOffset }}
       />
-    </View>
+
+      <SafeAreaView edges={['top']} style={styles.container}>
+        <FlatList
+          bounces
+          scrollEventThrottle={16}
+          data={items}
+          renderItem={renderItem}
+          style={styles.list}
+          contentContainerStyle={styles.listInner}
+          ItemSeparatorComponent={renderDivider}
+          ListHeaderComponent={renderHeader}
+          onScroll={onScroll}
+          onScrollEndDrag={onDragEnd}
+          ref={scrollRef}
+        />
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   listInner: {
-    paddingTop: 56,
+    paddingTop: Constants.HeaderOpenHeight,
     paddingBottom: 16,
   },
   separator: {

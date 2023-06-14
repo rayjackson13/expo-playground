@@ -1,19 +1,33 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView as SafeAreaViewBase } from 'react-native-safe-area-context';
 import Colors from '../constants/Colors';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import AnimatedTouchable from './AnimatedTouchable';
+import Animated, { AnimatedStyleProp } from 'react-native-reanimated';
 
 type Props = {
   route: RouteProp<any>;
   hasBorder?: boolean;
   children?: React.ReactNode;
   canGoBack?: boolean;
+  style?: AnimatedStyleProp<ViewStyle>;
+  containerStyle?: AnimatedStyleProp<ViewStyle> | AnimatedStyleProp<ViewStyle>[];
+  useAbsolute?: boolean;
 };
 
-export default function Header({ route, hasBorder, children, canGoBack }: Props) {
+const SafeAreaView = Animated.createAnimatedComponent(SafeAreaViewBase);
+
+export default function Header({ 
+  route,
+  hasBorder,
+  children,
+  canGoBack,
+  style,
+  containerStyle,
+  useAbsolute = true
+}: Props) {
   const { goBack } = useNavigation();
   const renderBody = () => {
     if (!children) {
@@ -24,11 +38,11 @@ export default function Header({ route, hasBorder, children, canGoBack }: Props)
   }
 
   return (
-    <SafeAreaView edges={['top']} style={styles.root}>
-      <View style={[styles.container, hasBorder && styles.hasBorder]}>
+    <SafeAreaView edges={['top']} style={[styles.root, style]}>
+      <Animated.View style={[styles.container, hasBorder && styles.hasBorder, containerStyle]}>
         {renderBody()}
 
-          <View style={[StyleSheet.absoluteFill, styles.buttonRow]}>
+          <View style={[StyleSheet.absoluteFill, styles.buttonRow, !useAbsolute && { zIndex: -1 }]}>
             <View style={styles.buttonWrap}>
               {canGoBack && (
                 <AnimatedTouchable style={styles.button} onPress={() => goBack()}>
@@ -40,7 +54,7 @@ export default function Header({ route, hasBorder, children, canGoBack }: Props)
 
             <View style={styles.buttonWrap} />
           </View>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   )
 }
@@ -61,8 +75,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.light.border,
   },
   title: {
-    fontWeight: '500',
+    fontWeight: '600',
     fontSize: 18,
+    lineHeight: 24,
   },
   buttonRow: {
     flexDirection: 'row',

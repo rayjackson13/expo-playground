@@ -47,7 +47,7 @@ export default function BottomTabNavigator() {
         name="Contacts"
         component={ContactsTab}
         options={{
-          header: (props) => <Header {...props} />,
+          headerShown: false,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="account-group-outline" {...props} />,
           tabBarShowLabel: false,
@@ -57,7 +57,7 @@ export default function BottomTabNavigator() {
         name="Messages"
         component={MessagesTab}
         options={{
-          header: (props) => <Header hasBorder {...props} />,
+          header: (props) => <Header useAbsolute={false} hasBorder {...props} />,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
           tabBarShowLabel: false,

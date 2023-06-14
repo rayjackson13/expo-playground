@@ -30,7 +30,8 @@ export default function StoriesView() {
 
 const styles = StyleSheet.create({
   root: {
-    paddingVertical: 16,
+    paddingTop: 16,
+    paddingBottom: 24,
   },
   inner: {
     paddingHorizontal: 16,

@@ -10,8 +10,8 @@ type Props = {
 export default function Tip({ isVisible }: Props) {
   const headerStyle = useAnimatedStyle(() => {
     return {
-      height: withTiming(isVisible.value ? 32 : 0),
-      opacity: withTiming(isVisible.value ? 1 : 0),
+      height: withTiming(isVisible.value ? 32 : 0, { duration: 500 }),
+      opacity: withTiming(isVisible.value ? 1 : 0, { duration: 500 }),
     };
   })
 

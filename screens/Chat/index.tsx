@@ -52,10 +52,10 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
       </Header>
 
       <KeyboardAvoidingView behavior="padding" style={styles.root} keyboardVerticalOffset={-insets.bottom}>
-        <View style={{ flex: 1, paddingBottom: insets.bottom }}>
+        <View style={{ flex: 1 }}>
           <MessageList lastMessage={lastMessage} chatId={id} />
 
-          <View style={[styles.footer]}>
+          <View style={[styles.footer, { paddingBottom: 8 + insets.bottom }]}>
             <AnimatedTouchable style={styles.attach} onPress={onSendPressed}>
               <MaterialIcons name="attach-file" color={Colors.light.secondary} size={24} />
             </AnimatedTouchable>
@@ -83,7 +83,7 @@ export default ChatScreen
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.light.window,
+    backgroundColor: Colors.light.background,
   },
   header: {
     position: 'relative',
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   name: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '600',
     color: Colors.light.text,
   },
   footer: {
