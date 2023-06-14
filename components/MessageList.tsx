@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 8,
     paddingVertical: 8,
+    backgroundColor: Colors.light.background,
+    flex: 1,
   },
   item: {
     position: 'relative',

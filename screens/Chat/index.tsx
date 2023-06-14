@@ -9,6 +9,7 @@ import MessageList from '../../components/MessageList';
 import Header from '../../components/Header';
 import AnimatedTouchable from '../../components/AnimatedTouchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -23,6 +24,15 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
   const insets = useSafeAreaInsets();
 
   const onSendPressed = () => setText('');
+
+  const sendStyle = useAnimatedStyle(() => {
+    const color = text.length ? Colors.light.tint : Colors.light.secondary;
+
+    return {
+      backgroundColor: withTiming(color, { duration: 250 }),
+      opacity: withTiming(text.length ? 1 : .5, { duration: 250 })
+    };
+  });
 
   return (
     <>
@@ -46,18 +56,20 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
           <MessageList lastMessage={lastMessage} chatId={id} />
 
           <View style={[styles.footer]}>
+            <AnimatedTouchable style={styles.attach} onPress={onSendPressed}>
+              <MaterialIcons name="attach-file" color={Colors.light.secondary} size={24} />
+            </AnimatedTouchable>
+
             <TextInput
               multiline
               style={styles.input}
-              placeholder="Type your message..."
+              placeholder="Message"
               value={text}
               onChangeText={setText}
             />
 
-            <AnimatedTouchable style={styles.send} onPress={onSendPressed}>
-              <View style={styles.sendInner}>
-                <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
-              </View>
+            <AnimatedTouchable style={[styles.send, sendStyle]} onPress={onSendPressed}>
+              <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
             </AnimatedTouchable>
           </View>
         </View>
@@ -71,7 +83,7 @@ export default ChatScreen
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.light.window,
   },
   header: {
     position: 'relative',
@@ -116,34 +128,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderTopWidth: 1,
     borderColor: Colors.light.border,
-    backgroundColor: Colors.light.background,
-    height: 56,
+    backgroundColor: Colors.light.window,
+    padding: 8,
+    alignItems: 'flex-end',
   },
   input: {
-    paddingLeft: 16,
-    paddingRight: 64,
-    paddingTop: 8,
-    paddingBottom: 8,
     flex: 1,
     fontSize: 16,
-    lineHeight: 20,
+    lineHeight: 18,
+    marginHorizontal: 8,
+    paddingHorizontal: 8,
+    paddingTop: 7,
+    paddingBottom: 7,
+    backgroundColor: Colors.light.background,
+    borderRadius: 16,
+    maxHeight: 200,
+  },
+  attach: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   send: {
-    position: 'absolute',
-    right: 16,
-    top: 0,
-    bottom: 0,
-    width: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-  },
-  sendInner: {
     height: 32,
     width: 32,
-    backgroundColor: Colors.light.text,
+    borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 32,
   },
 })
