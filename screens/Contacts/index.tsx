@@ -3,13 +3,14 @@ import Colors from '../../constants/Colors';
 import Contacts from '../../data/contacts.json';
 import ContactListItem from './Item';
 import ContactSearch from './Search';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Contact } from '../../constants/types';
-import { useSharedValue } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 export default function ContactsScreen() {
   const [searchText, setSearchText] = useState('');
   const scrollOffset = useSharedValue(0);
+  const headerVisible = useSharedValue(true);
   const scrollRef = useRef<FlatList<Contact>>(null);
   const items = Contacts.filter((contact) => contact.name.includes(searchText));
 
@@ -21,6 +22,11 @@ export default function ContactsScreen() {
     </View>
   );
 
+  const setHeaderVisible = (isVisible: boolean) => 
+    setTimeout(() => {
+      headerVisible.value = isVisible;
+    }, 500);
+
   const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollOffset.value = nativeEvent.contentOffset.y;
   };
@@ -31,23 +37,38 @@ export default function ContactsScreen() {
   const onDragEnd = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y: offset } = nativeEvent.contentOffset;
 
-    if (offset <= 0) {
+    if (offset <= 56 / 3) {
       scrollTo(0);
+      setHeaderVisible(false);
       return;
     }
 
-    if (offset <= 48) {
-      scrollTo(48);
+    if (offset <= 56) {
+      scrollTo(56);
+      setHeaderVisible(true);
     }
   };
 
+  const headerStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(headerVisible.value ? 32 : 0),
+      opacity: withTiming(headerVisible.value ? 1 : 0),
+    };
+  })
+
   const renderHeader = () => (
-    <View style={styles.header}>
+    <Animated.View style={[styles.header, headerStyle]}>
       <Text style={styles.headerText}>
         Swipe up to access search.
       </Text>
-    </View>
+    </Animated.View>
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollTo(56);
+    }, 100);
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -63,7 +84,6 @@ export default function ContactsScreen() {
         ItemSeparatorComponent={renderDivider}
         ListHeaderComponent={renderHeader}
         onScroll={onScroll}
-        contentOffset={{ x: 0, y: 48 }}
         onScrollEndDrag={onDragEnd}
         ref={scrollRef}
       />
@@ -84,7 +104,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   listInner: {
-    paddingTop: 48 + 16,
+    paddingTop: 56,
     paddingBottom: 16,
   },
   separator: {
@@ -105,11 +125,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   header: {
+    height: 32,
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingVertical: 8,
   },
   headerText: {
     fontSize: 12,
+    lineHeight: 16,
     textAlign: 'center',
     color: Colors.light.secondary,
   }

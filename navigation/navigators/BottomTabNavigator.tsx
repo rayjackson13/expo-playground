@@ -55,6 +55,7 @@ export default function BottomTabNavigator() {
         name="Messages"
         component={MessagesTab}
         options={{
+          header: (props) => <Header hasBorder {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
           tabBarShowLabel: false,
         }}

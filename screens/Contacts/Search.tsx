@@ -3,7 +3,7 @@ import React from 'react'
 import Colors from '../../constants/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { TextInput as TextInputBase } from 'react-native-gesture-handler'
-import Animated, { SharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { SharedValue, interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 
 type Props = {
   offset: SharedValue<number>;
@@ -13,7 +13,9 @@ type Props = {
 
 const TextInput = Animated.createAnimatedComponent(TextInputBase);
 
-const inputHeight = 48;
+const INPUT_HEIGHT = 40;
+const PADDING_VERTICAL = 8;
+const VIEW_HEIGHT = INPUT_HEIGHT + PADDING_VERTICAL * 2;
 
 export default function ContactSearch({ offset, onChange, value }: Props) {
   const rootStyles = useAnimatedStyle(() => {
@@ -22,24 +24,40 @@ export default function ContactSearch({ offset, onChange, value }: Props) {
         return 0;
       }
 
-      if (offset.value >= inputHeight) {
-        return -inputHeight + 1;
+      if (offset.value >= VIEW_HEIGHT) {
+        return -VIEW_HEIGHT + 1;
       }
 
       return -offset.value;
     }
 
     return ({
-      height: offset.value >= 0 ? inputHeight : inputHeight - offset.value,
+      height: offset.value >= 0 ? VIEW_HEIGHT : VIEW_HEIGHT - offset.value,
       transform: [{
         translateY: getTranslateY(),
       }]
     })
   });
 
-  const wrapStyles = useAnimatedStyle(() => ({
-    opacity: withSpring(offset.value > 0 ? 0 : 1),
-  }));
+  const wrapStyles = useAnimatedStyle(() => {
+    const opacity = interpolate(offset.value, [56, 0], [0, 1]);
+    const getHeight = (): number => {
+      if (offset.value <= 0) {
+        return 40;
+      }
+
+      if (offset.value >= VIEW_HEIGHT) {
+        return 0;
+      }
+
+      return interpolate(offset.value, [0, VIEW_HEIGHT], [INPUT_HEIGHT, 0]);
+    }
+
+    return ({ 
+      opacity,
+      height: getHeight()
+    })
+  });
 
   return (
     <Animated.View style={[styles.root, rootStyles]}>
@@ -75,11 +93,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: PADDING_VERTICAL,
     backgroundColor: Colors.light.border,
   },
   text: {
-    height: 40,
+    height: INPUT_HEIGHT,
     marginLeft: 8,
     color: Colors.light.text,
     flex: 1,
