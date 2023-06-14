@@ -2,17 +2,48 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { TextInput } from 'react-native-gesture-handler'
+import { TextInput as TextInputBase } from 'react-native-gesture-handler'
+import Animated, { SharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 
 type Props = {
+  offset: SharedValue<number>;
   onChange: (value: string) => unknown;
   value: string;
 }
 
-export default function ContactSearch({ onChange, value }: Props) {
+const TextInput = Animated.createAnimatedComponent(TextInputBase);
+
+const inputHeight = 48;
+
+export default function ContactSearch({ offset, onChange, value }: Props) {
+  const rootStyles = useAnimatedStyle(() => {
+    const getTranslateY = (): number => {
+      if (offset.value <= 0) {
+        return 0;
+      }
+
+      if (offset.value >= inputHeight) {
+        return -inputHeight + 1;
+      }
+
+      return -offset.value;
+    }
+
+    return ({
+      height: offset.value >= 0 ? inputHeight : inputHeight - offset.value,
+      transform: [{
+        translateY: getTranslateY(),
+      }]
+    })
+  });
+
+  const wrapStyles = useAnimatedStyle(() => ({
+    opacity: withSpring(offset.value > 0 ? 0 : 1),
+  }));
+
   return (
-    <View style={styles.root}>
-      <View style={styles.wrap}>
+    <Animated.View style={[styles.root, rootStyles]}>
+      <Animated.View style={[styles.wrap, wrapStyles]}>
         <MaterialCommunityIcons name="magnify" size={16} color={Colors.light.secondary} />
         <TextInput
           placeholder='Search'
@@ -23,16 +54,20 @@ export default function ContactSearch({ onChange, value }: Props) {
           returnKeyType="search"
           numberOfLines={1}
         />
-      </View>
-    </View>
+      </Animated.View>
+    </Animated.View>
   )
 }
 
 const styles = StyleSheet.create({
   root: {
-    paddingBottom: 8,
+    position: 'absolute',
+    width: '100%',
     borderBottomWidth: 1,
     borderColor: Colors.light.border,
+    backgroundColor: Colors.light.background,
+    zIndex: 1,
+    justifyContent: 'flex-end',
   },
   wrap: {
     marginHorizontal: 16,
@@ -40,6 +75,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 8,
     backgroundColor: Colors.light.border,
   },
   text: {
