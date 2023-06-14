@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { ParamListBase, useFocusEffect } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
 import { LinearGradient } from 'expo-linear-gradient';
+import AnimatedTouchable from '../../components/AnimatedTouchable';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -30,8 +31,7 @@ export default function ContactDetailsScreen({ route, navigation }: StackScreenP
 
   return (
     <SafeAreaView edges={['bottom']} style={styles.root}>
-      <TouchableOpacity
-        activeOpacity={.8}
+      <AnimatedTouchable
         style={styles.avatarWrap}
         onPress={() => navigation.navigate('PhotoPreview', { uri: avatar })}
       >
@@ -51,16 +51,16 @@ export default function ContactDetailsScreen({ route, navigation }: StackScreenP
             <Text style={styles.name}>{name}</Text>
           </SharedElement>
         </View>
-      </TouchableOpacity>
+      </AnimatedTouchable>
 
-      <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
+      <AnimatedTouchable onPress={() => navigation.goBack()} style={[styles.backButton, { top: insets.top }]}>
         <SharedElement id={`contact.goBack`}>
           <View style={styles.backButtonWrap}>
             <MaterialIcons name="chevron-left" color={Colors.dark.text} size={32} />
             <Text style={styles.backButtonText}>Back</Text>
           </View>
         </SharedElement>
-      </TouchableOpacity>
+      </AnimatedTouchable>
     </SafeAreaView>
   )
 }

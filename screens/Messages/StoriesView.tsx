@@ -1,37 +1,38 @@
-import { Image, ListRenderItem, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, ListRenderItem, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import Contacts from '../../data/contacts.json';
 import Colors from '../../constants/Colors';
 import { Contact } from '../../constants/types';
+import AnimatedTouchable from '../../components/AnimatedTouchable';
 
 export default function StoriesView() {
   const items = Contacts.filter(item => !!item.online);
 
   const renderItem: ListRenderItem<Contact> = ({ item }) => (
-    <TouchableOpacity>
+    <AnimatedTouchable>
       <Image source={{ uri: item.avatar }} style={styles.image} />
-    </TouchableOpacity>
+    </AnimatedTouchable>
   )
 
   return (
-    <View>
-      <FlatList
-        data={items}
-        renderItem={renderItem}
-        horizontal
-        style={styles.root}
-        contentContainerStyle={{ flex: 0 }}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
-    </View>
+    <FlatList
+      data={items}
+      renderItem={renderItem}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.root}
+      contentContainerStyle={styles.inner}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
+    />
   )
 }
 
 const styles = StyleSheet.create({
   root: {
-    paddingTop: 16,
-    paddingBottom: 8,
+    paddingVertical: 16,
+  },
+  inner: {
     paddingHorizontal: 16,
   },
   image: {

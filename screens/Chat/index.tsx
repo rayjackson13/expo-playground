@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { SharedElement } from 'react-navigation-shared-element';
 import MessageList from '../../components/MessageList';
 import Header from '../../components/Header';
+import AnimatedTouchable from '../../components/AnimatedTouchable';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -21,8 +22,7 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
   return (
     <>
       <Header hasBorder canGoBack route={route}>
-        <TouchableOpacity
-          activeOpacity={.8}
+        <AnimatedTouchable
           style={styles.info}
           onPress={() => navigation.navigate('ContactDetails', { avatar, id, name })}
         >
@@ -33,7 +33,7 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
           <SharedElement id={`contact.${id}.name`}>
             <Text style={styles.name}>{name}</Text>
           </SharedElement>
-        </TouchableOpacity>
+        </AnimatedTouchable>
       </Header>
 
       <View style={styles.root}>
@@ -42,9 +42,9 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
           <View style={styles.footer}>
             <TextInput style={styles.input} placeholder="Type your message..." />
-            <TouchableOpacity style={styles.send}>
+            <AnimatedTouchable style={styles.send}>
               <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
-            </TouchableOpacity>
+            </AnimatedTouchable>
           </View>
         </KeyboardAvoidingView>
       </View>

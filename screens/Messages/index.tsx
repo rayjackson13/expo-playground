@@ -1,9 +1,9 @@
 import { ParamListBase } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import StoriesView from './StoriesView';
+import AnimatedTouchable from '../../components/AnimatedTouchable';
 
 type Message = {
   id: number;
@@ -39,14 +39,14 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
     });
 
     return (
-      <TouchableOpacity style={styles.listItem} onPress={onPress}>
+      <AnimatedTouchable style={styles.listItem} onPress={onPress}>
         <Image source={{ uri: avatar }} style={styles.listItemImage} />
 
         <View style={styles.listItemBody}>
           <Text style={styles.listItemName}>{name}</Text>
           <Text style={styles.listItemText} numberOfLines={2}>{lastMessage}</Text>
         </View>
-      </TouchableOpacity>
+      </AnimatedTouchable>
     )
   }
 
@@ -58,13 +58,12 @@ export default function MessagesScreen({ navigation }: StackScreenProps<ParamLis
 
   return (
     <View style={styles.container}>
-      <StoriesView />
-
       <FlatList
         data={messages}
         renderItem={renderItem}
         style={styles.list}
         ItemSeparatorComponent={renderDivider}
+        ListHeaderComponent={<StoriesView />}
       />
     </View>
   );
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   list: {
-    paddingVertical: 16,
+    paddingBottom: 16,
   },
   listItem: {
     flexDirection: 'row',

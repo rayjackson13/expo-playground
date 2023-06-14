@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SharedElement } from 'react-navigation-shared-element';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
+import AnimatedTouchable from '../../components/AnimatedTouchable';
 
 type Props = {
   id: number;
@@ -21,7 +21,7 @@ export default function ContactListItem({ id, avatar, name }: Props) {
   });
 
   return (
-    <TouchableOpacity style={styles.listItem} onPress={onPress}>
+    <AnimatedTouchable style={styles.listItem} onPress={onPress}>
       <SharedElement id={`contact.${id}.avatar`}>
         <Image source={{ uri: avatar }} style={styles.listItemImage} />
       </SharedElement>
@@ -31,8 +31,7 @@ export default function ContactListItem({ id, avatar, name }: Props) {
           <Text style={styles.listItemName}>{name}</Text>
         </SharedElement>
       </View>
-      
-    </TouchableOpacity>
+    </AnimatedTouchable>
   )
 }
 

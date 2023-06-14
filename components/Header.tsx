@@ -3,8 +3,8 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from '../constants/Colors';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
+import AnimatedTouchable from './AnimatedTouchable';
 
 type Props = {
   route: RouteProp<any>;
@@ -31,10 +31,10 @@ export default function Header({ route, hasBorder, children, canGoBack }: Props)
           <View style={[StyleSheet.absoluteFill, styles.buttonRow]}>
             <View style={styles.buttonWrap}>
               {canGoBack && (
-                <TouchableOpacity style={styles.button} onPress={() => goBack()}>
+                <AnimatedTouchable style={styles.button} onPress={() => goBack()}>
                   <MaterialIcons name="arrow-back-ios" size={18} color={Colors.light.text} />
                   <Text style={styles.buttonText}>Back</Text>
-                </TouchableOpacity>
+                </AnimatedTouchable>
               )}
             </View>
 
