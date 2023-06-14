@@ -14,7 +14,7 @@ import { Constants } from './constants';
 export default function ContactsScreen({ route }: StackScreenProps<{}>) {
   const [searchText, setSearchText] = useState('');
   const scrollOffset = useSharedValue(0);
-  const headerVisible = useSharedValue(true);
+  const tipVisible = useSharedValue(true);
   const scrollRef = useRef<FlatList<Contact>>(null);
   const items = Contacts.filter((contact) => contact.name.includes(searchText));
 
@@ -26,9 +26,9 @@ export default function ContactsScreen({ route }: StackScreenProps<{}>) {
     </View>
   );
 
-  const setHeaderVisible = (isVisible: boolean) => 
+  const setTipVisible = (isVisible: boolean) => 
     setTimeout(() => {
-      headerVisible.value = isVisible;
+      tipVisible.value = isVisible;
     }, 500);
 
   const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -44,22 +44,22 @@ export default function ContactsScreen({ route }: StackScreenProps<{}>) {
 
     if (offset <= Constants.SearchHeight / 3) {
       scrollTo(0);
-      setHeaderVisible(false);
+      setTipVisible(false);
       return;
     }
 
     if (offset <= Constants.SearchHeight) {
       scrollTo(Constants.SearchHeight);
-      setHeaderVisible(true);
+      setTipVisible(true);
     }
   };
 
-  const renderHeader = () => <Tip isVisible={headerVisible} />;
+  const renderHeader = () => <Tip isVisible={tipVisible} />;
 
   useEffect(() => {
     setTimeout(() => {
-      scrollTo(Constants.SearchHeight);
-    }, 100);
+      scrollTo(Constants.SearchHeight + 1);
+    }, 200);
   }, [])
 
   return (
