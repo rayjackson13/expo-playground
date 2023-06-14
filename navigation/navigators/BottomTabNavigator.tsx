@@ -8,6 +8,7 @@ import { TransitionConfig } from '../helpers/TransitionConfig';
 import SkiaScreen from '../../screens/Skia';
 import SplashScreen from '../../screens/Splash';
 import Header from '../../components/Header';
+import AnimatedTouchable from '../../components/AnimatedTouchable';
 
 const Tabs = createBottomTabNavigator();
 
@@ -47,6 +48,7 @@ export default function BottomTabNavigator() {
         component={ContactsTab}
         options={{
           header: (props) => <Header {...props} />,
+          tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="account-group-outline" {...props} />,
           tabBarShowLabel: false,
         }}
@@ -56,6 +58,7 @@ export default function BottomTabNavigator() {
         component={MessagesTab}
         options={{
           header: (props) => <Header hasBorder {...props} />,
+          tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
           tabBarShowLabel: false,
         }}
@@ -64,6 +67,8 @@ export default function BottomTabNavigator() {
         name="SkiaDemo"
         component={SkiaScreen}
         options={{
+          header: (props) => <Header hasBorder {...props} />,
+          tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="draw-pen" {...props} />,
           tabBarShowLabel: false,
         }}
