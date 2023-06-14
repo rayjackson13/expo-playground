@@ -16,7 +16,6 @@ type Props = {
 
 export default function ContactsHeader({ route, setSearchText, searchText, scrollOffset }: Props) {
   const containerStyle = useAnimatedStyle(() => {
-    console.log(scrollOffset.value);
     const getHeight = () => {
       if (scrollOffset.value < 0) {
         return Constants.HeaderOpenHeight - scrollOffset.value;
