@@ -1,6 +1,5 @@
 import { ListRenderItem, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { SharedElement } from 'react-navigation-shared-element'
 import Colors from '../constants/Colors';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -20,6 +19,8 @@ export default function MessageList({ lastMessage, chatId }: Props) {
 
   return (
     <FlatList
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="interactive"
       data={[lastMessage, '123', 'Test Message']}
       renderItem={renderItem}
       contentContainerStyle={styles.list}
@@ -31,14 +32,13 @@ export default function MessageList({ lastMessage, chatId }: Props) {
 const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 8,
-    flex: 1,
     paddingVertical: 8,
   },
   item: {
     position: 'relative',
     marginBottom: 8,
     backgroundColor: Colors.light.border,
-    padding: 8,
+    padding: 12,
     borderRadius: 16,
     maxWidth: '75%',
     alignSelf: 'flex-start',

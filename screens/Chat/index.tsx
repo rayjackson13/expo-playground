@@ -1,5 +1,5 @@
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import { Image, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useState } from 'react'
 import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ParamListBase } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { SharedElement } from 'react-navigation-shared-element';
 import MessageList from '../../components/MessageList';
 import Header from '../../components/Header';
 import AnimatedTouchable from '../../components/AnimatedTouchable';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type RouteParams = ParamListBase & {
   id: number;
@@ -18,6 +19,10 @@ type RouteParams = ParamListBase & {
 
 const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
   const { id, avatar, name, lastMessage } = route.params as RouteParams;
+  const [text, setText] = useState('');
+  const insets = useSafeAreaInsets();
+
+  const onSendPressed = () => setText('');
 
   return (
     <>
@@ -36,18 +41,27 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         </AnimatedTouchable>
       </Header>
 
-      <View style={styles.root}>
-        <MessageList lastMessage={lastMessage} chatId={id} />
+      <KeyboardAvoidingView behavior="padding" style={styles.root} keyboardVerticalOffset={-insets.bottom}>
+        <View style={{ flex: 1, paddingBottom: insets.bottom }}>
+          <MessageList lastMessage={lastMessage} chatId={id} />
 
-        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={8}>
-          <View style={styles.footer}>
-            <TextInput style={styles.input} placeholder="Type your message..." />
-            <AnimatedTouchable style={styles.send}>
-              <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
+          <View style={[styles.footer]}>
+            <TextInput
+              multiline
+              style={styles.input}
+              placeholder="Type your message..."
+              value={text}
+              onChangeText={setText}
+            />
+
+            <AnimatedTouchable style={styles.send} onPress={onSendPressed}>
+              <View style={styles.sendInner}>
+                <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
+              </View>
             </AnimatedTouchable>
           </View>
-        </KeyboardAvoidingView>
-      </View>
+        </View>
+      </KeyboardAvoidingView>
     </>
   )
 }
@@ -99,23 +113,37 @@ const styles = StyleSheet.create({
     color: Colors.light.text,
   },
   footer: {
-    paddingHorizontal: 16,
     flexDirection: 'row',
     borderTopWidth: 1,
-    paddingVertical: 8,
-    borderColor: Colors.light.border
+    borderColor: Colors.light.border,
+    backgroundColor: Colors.light.background,
+    height: 56,
   },
   input: {
+    paddingLeft: 16,
+    paddingRight: 64,
+    paddingTop: 8,
+    paddingBottom: 8,
     flex: 1,
-    height: 32,
-    marginRight: 8,
+    fontSize: 16,
+    lineHeight: 20,
   },
   send: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.light.text,
-    borderRadius: 32,
+    position: 'absolute',
+    right: 16,
+    top: 0,
+    bottom: 0,
+    width: 48,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+    zIndex: 1,
+  },
+  sendInner: {
+    height: 32,
+    width: 32,
+    backgroundColor: Colors.light.text,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 32,
+  },
 })
