@@ -6,6 +6,7 @@ import ContactSearch from './Search';
 import { useEffect, useRef, useState } from 'react';
 import { Contact } from '../../constants/types';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Tip from './Tip';
 
 export default function ContactsScreen() {
   const [searchText, setSearchText] = useState('');
@@ -49,20 +50,7 @@ export default function ContactsScreen() {
     }
   };
 
-  const headerStyle = useAnimatedStyle(() => {
-    return {
-      height: withTiming(headerVisible.value ? 32 : 0),
-      opacity: withTiming(headerVisible.value ? 1 : 0),
-    };
-  })
-
-  const renderHeader = () => (
-    <Animated.View style={[styles.header, headerStyle]}>
-      <Text style={styles.headerText}>
-        Swipe up to access search.
-      </Text>
-    </Animated.View>
-  );
+  const renderHeader = () => <Tip isVisible={headerVisible} />;
 
   useEffect(() => {
     setTimeout(() => {
@@ -124,15 +112,4 @@ const styles = StyleSheet.create({
     right: 0,
     overflow: 'hidden',
   },
-  header: {
-    height: 32,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  headerText: {
-    fontSize: 12,
-    lineHeight: 16,
-    textAlign: 'center',
-    color: Colors.light.secondary,
-  }
 });
