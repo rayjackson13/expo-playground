@@ -6,12 +6,16 @@ import { RouteProp, useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import AnimatedTouchable from './AnimatedTouchable';
 import Animated, { AnimatedStyleProp } from 'react-native-reanimated';
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 type Props = {
   route: RouteProp<any>;
   hasBorder?: boolean;
   children?: React.ReactNode;
   canGoBack?: boolean;
+  headerTitle?: string;
+  options?: BottomTabNavigationOptions | StackNavigationOptions;
   style?: AnimatedStyleProp<ViewStyle>;
   containerStyle?: AnimatedStyleProp<ViewStyle> | AnimatedStyleProp<ViewStyle>[];
   useAbsolute?: boolean;
@@ -25,13 +29,14 @@ export default function Header({
   children,
   canGoBack,
   style,
+  options,
   containerStyle,
   useAbsolute = true
 }: Props) {
   const { goBack } = useNavigation();
   const renderBody = () => {
     if (!children) {
-      return <Text style={styles.title}>{route.name}</Text>;
+      return <Text style={styles.title}>{options?.title || route.name}</Text>;
     }
 
     return children;

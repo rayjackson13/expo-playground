@@ -7,8 +7,10 @@ import { SharedElementSceneComponent, createSharedElementStackNavigator } from '
 import { TransitionConfig } from '../helpers/TransitionConfig';
 import Header from '../../components/Header';
 import AnimatedTouchable from '../../components/AnimatedTouchable';
+import MenuTab from '../../screens/Menu';
+import { TabParamList } from '../../constants/types';
 
-const Tabs = createBottomTabNavigator();
+const Tabs = createBottomTabNavigator<TabParamList>();
 
 const wrapInSharedElementStack = (
   Screen: SharedElementSceneComponent<any>,
@@ -38,7 +40,8 @@ export default function BottomTabNavigator() {
     <Tabs.Navigator
       initialRouteName="Contacts"
       screenOptions={{
-        header: (props) => <Header hasBorder {...props} />
+        header: (props) => <Header hasBorder {...props} />,
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
@@ -48,17 +51,25 @@ export default function BottomTabNavigator() {
           headerShown: false,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="account-group-outline" {...props} />,
-          tabBarShowLabel: false,
         }}
       />
       <Tabs.Screen
         name="Messages"
         component={MessagesTab}
         options={{
-          header: (props) => <Header useAbsolute={false} hasBorder {...props} />,
+          header: (props) => <Header hasBorder {...props} />,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
-          tabBarShowLabel: false,
+        }}
+      />
+      <Tabs.Screen
+        name="Menu"
+        component={MenuTab}
+        options={{
+          header: (props) => <Header hasBorder {...props} />,
+          title: 'Playground',
+          tabBarButton: (props) => <AnimatedTouchable {...props} />,
+          tabBarIcon: (props) => <MaterialCommunityIcons name="menu" {...props} />,
         }}
       />
     </Tabs.Navigator>

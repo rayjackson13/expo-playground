@@ -7,14 +7,16 @@ import BottomTabNavigator from './BottomTabNavigator';
 import ContactDetailsScreen from '../../screens/ContactDetails';
 import { TransitionConfig } from '../helpers/TransitionConfig';
 import Header from '../../components/Header';
+import { StackParamList } from '../../constants/types';
+import Game2048 from '../../screens/Game2048';
 
-const Stack = createSharedElementStackNavigator();
+const Stack = createSharedElementStackNavigator<StackParamList>();
 
 export default function RootNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
-        header: (props) => <Header hasBorder {...props} />,
+        header: (props) => <Header hasBorder canGoBack {...props} />,
         cardOverlayEnabled: false,
         cardShadowEnabled: true,
         transitionSpec: {
@@ -64,6 +66,13 @@ export default function RootNavigator() {
           cardShadowEnabled: false,
           gestureEnabled: false,
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+        }}
+      />
+      <Stack.Screen
+        name="Game2048"
+        component={Game2048}
+        options={{
+          title: '2048',
         }}
       />
     </Stack.Navigator>
