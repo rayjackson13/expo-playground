@@ -5,8 +5,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ContactsScreen from '../../screens/Contacts';
 import { SharedElementSceneComponent, createSharedElementStackNavigator } from 'react-navigation-shared-element';
 import { TransitionConfig } from '../helpers/TransitionConfig';
-import SkiaScreen from '../../screens/Skia';
-import SplashScreen from '../../screens/Splash';
 import Header from '../../components/Header';
 import AnimatedTouchable from '../../components/AnimatedTouchable';
 
@@ -60,16 +58,6 @@ export default function BottomTabNavigator() {
           header: (props) => <Header useAbsolute={false} hasBorder {...props} />,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
           tabBarIcon: (props) => <MaterialCommunityIcons name="chat-outline" {...props} />,
-          tabBarShowLabel: false,
-        }}
-      />
-      <Tabs.Screen
-        name="SkiaDemo"
-        component={SkiaScreen}
-        options={{
-          header: (props) => <Header hasBorder {...props} />,
-          tabBarButton: (props) => <AnimatedTouchable {...props} />,
-          tabBarIcon: (props) => <MaterialCommunityIcons name="draw-pen" {...props} />,
           tabBarShowLabel: false,
         }}
       />
