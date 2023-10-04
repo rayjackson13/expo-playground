@@ -9,6 +9,7 @@ import { TransitionConfig } from '../helpers/TransitionConfig';
 import Header from '../../components/Header';
 import { StackParamList } from '../../constants/types';
 import Game2048 from '../../screens/Game2048';
+import ListPerformance from '../../screens/ListPerformance';
 
 const Stack = createSharedElementStackNavigator<StackParamList>();
 
@@ -74,6 +75,11 @@ export default function RootNavigator() {
         options={{
           title: '2048',
         }}
+      />
+      <Stack.Screen
+        name="ListPerformance"
+        component={ListPerformance}
+        options={{ title: 'List Performance' }}
       />
     </Stack.Navigator>
   )
