@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import Colors from 'constants/Colors';
 
@@ -46,6 +46,7 @@ export const MenuTab = ({ navigation }: Props) => {
 
   return (
     <FlatList
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
       data={items}
       keyExtractor={(item, index) => item.title + index}
       renderItem={renderItem}
@@ -59,5 +60,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.background,
     flex: 1,
     paddingHorizontal: 16,
+  },
+  separator: {
+    backgroundColor: Colors.light.border,
+    height: 1,
+    width: '100%',
   },
 });

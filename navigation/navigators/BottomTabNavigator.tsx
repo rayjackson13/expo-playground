@@ -1,10 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
 import { AnimatedTouchable } from 'components/AnimatedTouchable';
 import { Header } from 'components/Header';
+import Colors from 'constants/Colors';
 import { ContactsScreen } from 'screens/Contacts';
 import { MenuTab } from 'screens/Menu';
 import { MessagesScreen } from 'screens/Messages';
@@ -44,6 +46,7 @@ export const BottomTabNavigator = () => {
       screenOptions={{
         header: (props) => <Header hasBorder {...props} />,
         tabBarShowLabel: false,
+        tabBarBackground: () => <View style={styles.background} />,
       }}
     >
       <Tabs.Screen
@@ -77,3 +80,10 @@ export const BottomTabNavigator = () => {
     </Tabs.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.light.window,
+  },
+});

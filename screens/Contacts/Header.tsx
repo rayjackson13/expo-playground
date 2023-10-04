@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
-    backgroundColor: Colors.light.window,
     position: 'absolute',
     top: 0,
     width: '100%',

@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
@@ -15,7 +15,8 @@ type Props = PressableProps & {
 export const MenuItem = ({ children, ...props }: Props) => (
   <AnimatedTouchable style={styles.root} {...props}>
     <Text style={styles.text}>{children}</Text>
-    <MaterialCommunityIcons color={Colors.light.text} name="chevron-right" size={22} />
+
+    <FontAwesome5 color={Colors.light.secondary} name="chevron-right" size={14} />
   </AnimatedTouchable>
 );
 
@@ -23,12 +24,13 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: 16,
+    justifyContent: 'space-between',
+    paddingVertical: 12,
   },
   text: {
     color: Colors.light.text,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
     lineHeight: 24,
   },
 });

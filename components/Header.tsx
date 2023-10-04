@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.light.border,
   },
   root: {
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.light.window,
   },
   title: {
     fontSize: 18,

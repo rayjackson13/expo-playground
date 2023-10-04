@@ -6,7 +6,7 @@ export default {
     text: '#000',
     secondary: '#515151',
     border: '#e4e4e4',
-    window: '#f2f2f2',
+    window: '#f6f6f6',
     background: '#fff',
     tint: tintColorLight,
     tabIconDefault: '#ccc',
@@ -14,7 +14,7 @@ export default {
   },
   dark: {
     text: '#fff',
-    background: '#000',
+    background: '#111',
     window: '#2e2e2e',
     tint: tintColorDark,
     tabIconDefault: '#ccc',
