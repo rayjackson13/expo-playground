@@ -1,4 +1,4 @@
-import { TransitionSpec } from "@react-navigation/stack/lib/typescript/src/types";
+import type { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 
 export const TransitionConfig: TransitionSpec = {
   animation: 'timing',

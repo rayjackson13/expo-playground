@@ -1,20 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Header from '../../components/Header'
-import { RouteProp } from '@react-navigation/native'
-import { Extrapolate, SharedValue, interpolate, useAnimatedStyle } from 'react-native-reanimated'
-import ContactSearch from './Search'
-import { Constants } from './constants'
-import Colors from '../../constants/Colors'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
+
+import { Header } from 'components/Header';
+import Colors from 'constants/Colors';
+
+import { ContactSearch } from './Search';
+import { Constants } from './constants';
+
+import type { RouteProp } from '@react-navigation/native';
+import type { SharedValue } from 'react-native-reanimated';
 
 type Props = {
   route: RouteProp<{}, never>;
   searchText: string;
   setSearchText: (text: string) => unknown;
   scrollOffset: SharedValue<number>;
-}
+};
 
-export default function ContactsHeader({ route, setSearchText, searchText, scrollOffset }: Props) {
+export const ContactsHeader = ({ route, setSearchText, searchText, scrollOffset }: Props) => {
   const containerStyle = useAnimatedStyle(() => {
     const getHeight = () => {
       if (scrollOffset.value < 0) {
@@ -25,51 +29,56 @@ export default function ContactsHeader({ route, setSearchText, searchText, scrol
         scrollOffset.value,
         [0, Constants.SearchHeight],
         [Constants.HeaderOpenHeight, Constants.HeaderHeight],
-        Extrapolate.CLAMP
+        Extrapolate.CLAMP,
       );
-    }
+    };
 
-    return ({ 
+    return {
       height: getHeight(),
-      paddingBottom: interpolate(scrollOffset.value, [0, Constants.SearchHeight], [8, 0], Extrapolate.CLAMP),
-    })
+      paddingBottom: interpolate(
+        scrollOffset.value,
+        [0, Constants.SearchHeight],
+        [8, 0],
+        Extrapolate.CLAMP,
+      ),
+    };
   });
 
   return (
-    <Header 
-      route={route}
-      hasBorder
-      style={styles.header}
+    <Header
       containerStyle={[styles.container, containerStyle]}
+      hasBorder
+      route={route}
+      style={styles.header}
       useAbsolute={false}
     >
       <View style={styles.main}>
         <Text style={styles.title}>Contacts</Text>
       </View>
-      <ContactSearch onChange={setSearchText} value={searchText} offset={scrollOffset} />
+      <ContactSearch offset={scrollOffset} onChange={setSearchText} value={searchText} />
     </Header>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: Colors.light.window,
-    position: 'absolute',
-    zIndex: 999,
-    width: '100%',
-    top: 0,
-  },
   container: {
     justifyContent: 'space-between',
   },
+  header: {
+    backgroundColor: Colors.light.window,
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    zIndex: 999,
+  },
   main: {
+    alignItems: 'center',
     height: Constants.HeaderHeight,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
     lineHeight: 24,
-  }
-})
+  },
+});

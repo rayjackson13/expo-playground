@@ -1,19 +1,19 @@
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { CompositeScreenProps, ParamListBase } from "@react-navigation/native";
-import { StackScreenProps } from "@react-navigation/stack";
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import type { CompositeScreenProps, ParamListBase } from '@react-navigation/native';
+import type { StackScreenProps } from '@react-navigation/stack';
 
 export type Contact = {
   id: number;
   avatar: string;
   name: string;
   online?: boolean;
-}
+};
 
 export type TabParamList = {
   Contacts: undefined;
   Messages: undefined;
   Menu: undefined;
-}
+};
 
 export type StackParamList = ParamListBase & {
   ContactDetails: {
@@ -32,7 +32,7 @@ export type StackParamList = ParamListBase & {
     uri: string;
   };
   Game2048: undefined;
-}
+};
 
 export type RootStackScreenProps<Screen extends keyof StackParamList> = StackScreenProps<
   StackParamList,

@@ -1,31 +1,32 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Colors from '../../constants/Colors';
 import AnimatedLottieView from 'lottie-react-native';
-import Animation from '../../assets/splash.json';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+
+import Animation from 'assets/splash.json';
+import Colors from 'constants/Colors';
 
 type Props = {
   setLoading: (value: boolean) => unknown;
-}
+};
 
-export default function SplashScreen({ setLoading }: Props) {
+export const SplashScreen = ({ setLoading }: Props) => {
   return (
     <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.root}>
       <AnimatedLottieView
-        source={Animation}
         autoPlay
         loop={false}
-        resizeMode="cover"
         onAnimationFinish={() => setLoading(false)}
+        resizeMode="cover"
+        source={Animation}
       />
     </Animated.View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
     backgroundColor: Colors.light.background,
+    flex: 1,
   },
 });

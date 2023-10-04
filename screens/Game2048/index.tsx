@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function Game2048() {
+export const Game2048 = () => {
   return (
-    <View>
+    <View style={styles.root}>
       <Text>Game2048</Text>
     </View>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  root: {},
+});

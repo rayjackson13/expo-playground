@@ -1,24 +1,28 @@
-import { FlatList, Keyboard, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
-import Colors from '../../constants/Colors';
-import Contacts from '../../data/contacts.json';
-import ContactListItem from './Item';
 import { useEffect, useRef, useState } from 'react';
-import { Contact } from '../../constants/types';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import Tip from './Tip';
-import { StackScreenProps } from '@react-navigation/stack';
-import ContactsHeader from './Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import Colors from 'constants/Colors';
+import Contacts from 'data/contacts.json';
+
+import { ContactsHeader } from './Header';
+import { ContactListItem } from './Item';
+import { Tip } from './Tip';
 import { Constants } from './constants';
 
-export default function ContactsScreen({ route }: StackScreenProps<{}>) {
+import type { StackScreenProps } from '@react-navigation/stack';
+import type { Contact } from 'constants/types';
+import type { ListRenderItem, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+
+export const ContactsScreen = ({ route }: StackScreenProps<{}>) => {
   const [searchText, setSearchText] = useState('');
   const scrollOffset = useSharedValue(0);
   const tipVisible = useSharedValue(true);
   const scrollRef = useRef<FlatList<Contact>>(null);
   const items = Contacts.filter((contact) => contact.name.includes(searchText));
 
-  const renderItem: ListRenderItem<Contact> = ({ item }) => <ContactListItem {...item} />
+  const renderItem: ListRenderItem<Contact> = ({ item }) => <ContactListItem {...item} />;
 
   const renderDivider = () => (
     <View style={styles.separator}>
@@ -26,7 +30,7 @@ export default function ContactsScreen({ route }: StackScreenProps<{}>) {
     </View>
   );
 
-  const setTipVisible = (isVisible: boolean) => 
+  const setTipVisible = (isVisible: boolean) =>
     setTimeout(() => {
       tipVisible.value = isVisible;
     }, 500);
@@ -36,8 +40,7 @@ export default function ContactsScreen({ route }: StackScreenProps<{}>) {
     Keyboard.dismiss();
   };
 
-  const scrollTo = (offset: number): void => 
-    scrollRef.current?.scrollToOffset({ offset })
+  const scrollTo = (offset: number): void => scrollRef.current?.scrollToOffset({ offset });
 
   const onDragEnd = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y: offset } = nativeEvent.contentOffset;
@@ -60,64 +63,51 @@ export default function ContactsScreen({ route }: StackScreenProps<{}>) {
     setTimeout(() => {
       scrollTo(Constants.SearchHeight + 1);
     }, 200);
-  }, [])
+  }, []);
 
   return (
     <>
-      <ContactsHeader
-        {...{ route, setSearchText, searchText, scrollOffset }}
-      />
+      <ContactsHeader {...{ route, setSearchText, searchText, scrollOffset }} />
 
       <SafeAreaView edges={['top']} style={styles.container}>
         <FlatList
-          bounces
-          scrollEventThrottle={16}
-          data={items}
-          renderItem={renderItem}
-          style={styles.list}
-          contentContainerStyle={styles.listInner}
           ItemSeparatorComponent={renderDivider}
           ListHeaderComponent={renderHeader}
+          bounces
+          contentContainerStyle={styles.listInner}
+          data={items}
           onScroll={onScroll}
           onScrollEndDrag={onDragEnd}
           ref={scrollRef}
+          renderItem={renderItem}
+          scrollEventThrottle={16}
+          style={styles.list}
         />
       </SafeAreaView>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: Colors.light.background,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    flex: 1,
   },
   list: {
     overflow: 'hidden',
   },
   listInner: {
-    paddingTop: Constants.HeaderOpenHeight,
     paddingBottom: 16,
+    paddingTop: Constants.HeaderOpenHeight,
   },
   separator: {
-    padding: 16,
-    paddingVertical: 8,
-    paddingLeft: 16 + 56 + 16,
     flexShrink: 0,
+    padding: 16,
+    paddingLeft: 16 + 56 + 16,
+    paddingVertical: 8,
   },
   separatorLine: {
-    height: 1,
     backgroundColor: Colors.light.border,
-  },
-  search: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    overflow: 'hidden',
+    height: 1,
   },
 });

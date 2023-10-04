@@ -1,33 +1,35 @@
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import MessagesScreen from '../../screens/Messages';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import ContactsScreen from '../../screens/Contacts';
-import { SharedElementSceneComponent, createSharedElementStackNavigator } from 'react-navigation-shared-element';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from 'react';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
+
+import { AnimatedTouchable } from 'components/AnimatedTouchable';
+import { Header } from 'components/Header';
+import { ContactsScreen } from 'screens/Contacts';
+import { MenuTab } from 'screens/Menu';
+import { MessagesScreen } from 'screens/Messages';
+
 import { TransitionConfig } from '../helpers/TransitionConfig';
-import Header from '../../components/Header';
-import AnimatedTouchable from '../../components/AnimatedTouchable';
-import MenuTab from '../../screens/Menu';
-import { TabParamList } from '../../constants/types';
+
+import type { TabParamList } from 'constants/types';
+import type { SharedElementSceneComponent } from 'react-navigation-shared-element';
 
 const Tabs = createBottomTabNavigator<TabParamList>();
 
-const wrapInSharedElementStack = (
-  Screen: SharedElementSceneComponent<any>,
-  name: string,
-) => {
+const wrapInSharedElementStack = (Screen: SharedElementSceneComponent<any>, name: string) => {
   const SharedStack = createSharedElementStackNavigator();
   return () => (
     <SharedStack.Navigator
+      initialRouteName={name}
       screenOptions={{
         headerShown: false,
         transitionSpec: {
           open: TransitionConfig,
           close: TransitionConfig,
-        }
+        },
       }}
-      initialRouteName={name}>
-      <SharedStack.Screen name={name} component={Screen} />
+    >
+      <SharedStack.Screen component={Screen} name={name} />
     </SharedStack.Navigator>
   );
 };
@@ -35,7 +37,7 @@ const wrapInSharedElementStack = (
 const ContactsTab = wrapInSharedElementStack(ContactsScreen, 'ContactsScreen');
 const MessagesTab = wrapInSharedElementStack(MessagesScreen, 'MessagesScreen');
 
-export default function BottomTabNavigator() {
+export const BottomTabNavigator = () => {
   return (
     <Tabs.Navigator
       initialRouteName="Contacts"
@@ -45,8 +47,8 @@ export default function BottomTabNavigator() {
       }}
     >
       <Tabs.Screen
-        name="Contacts"
         component={ContactsTab}
+        name="Contacts"
         options={{
           headerShown: false,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
@@ -54,8 +56,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <Tabs.Screen
-        name="Messages"
         component={MessagesTab}
+        name="Messages"
         options={{
           header: (props) => <Header hasBorder {...props} />,
           tabBarButton: (props) => <AnimatedTouchable {...props} />,
@@ -63,8 +65,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <Tabs.Screen
-        name="Menu"
         component={MenuTab}
+        name="Menu"
         options={{
           header: (props) => <Header hasBorder {...props} />,
           title: 'Playground',
@@ -73,5 +75,5 @@ export default function BottomTabNavigator() {
         }}
       />
     </Tabs.Navigator>
-  )
-}
+  );
+};

@@ -1,15 +1,19 @@
-import { FlatList, ListRenderItem, StyleSheet } from 'react-native';
 import React from 'react';
-import Colors from '../../constants/Colors';
-import MenuItem from './MenuItem';
-import { RootTabScreenProps, StackParamList, TabParamList } from '../../constants/types';
+import { FlatList, StyleSheet } from 'react-native';
+
+import Colors from 'constants/Colors';
+
+import { MenuItem } from './MenuItem';
+
+import type { RootTabScreenProps, StackParamList, TabParamList } from 'constants/types';
+import type { ListRenderItem } from 'react-native';
 
 type Screen = keyof StackParamList | keyof TabParamList;
 type ItemType = {
   title: string;
   screen: Screen;
-  params: StackParamList[Screen]
-}
+  params: StackParamList[Screen];
+};
 
 type Props = RootTabScreenProps<'Menu'>;
 
@@ -30,32 +34,30 @@ const items: ItemType[] = [
     title: 'List Performance',
     screen: 'ListPerformance',
     params: {},
-  }
+  },
 ];
 
-export default function MenuTab({ navigation }: Props) {
+export const MenuTab = ({ navigation }: Props) => {
   const renderItem: ListRenderItem<ItemType> = ({ item }): JSX.Element => {
     const onPress = (): void => navigation.navigate(item.screen, item.params);
 
-    return (
-      <MenuItem onPress={onPress}>{item.title}</MenuItem>   
-    )
-  }
+    return <MenuItem onPress={onPress}>{item.title}</MenuItem>;
+  };
 
   return (
     <FlatList
-      style={styles.root}
       data={items}
-      renderItem={renderItem}
       keyExtractor={(item, index) => item.title + index}
+      renderItem={renderItem}
+      style={styles.root}
     />
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
     backgroundColor: Colors.light.background,
+    flex: 1,
     paddingHorizontal: 16,
-  }
-})
+  },
+});

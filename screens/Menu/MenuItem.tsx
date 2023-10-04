@@ -1,32 +1,34 @@
-import { PressableProps, StyleSheet, Text } from 'react-native'
-import React, { ReactNode } from 'react'
-import AnimatedTouchable from '../../components/AnimatedTouchable';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Colors from '../../constants/Colors';
+import React from 'react';
+import { StyleSheet, Text } from 'react-native';
+
+import { AnimatedTouchable } from 'components/AnimatedTouchable';
+import Colors from 'constants/Colors';
+
+import type { ReactNode } from 'react';
+import type { PressableProps } from 'react-native';
 
 type Props = PressableProps & {
   children: ReactNode;
-}
+};
 
-export default function MenuItem({ children, ...props }: Props) {
-  return (
-    <AnimatedTouchable style={styles.root} {...props}>
-      <Text style={styles.text}>{children}</Text>
-      <MaterialCommunityIcons name="chevron-right" size={22} color={Colors.light.text} />
-    </AnimatedTouchable>
-  )
-}
+export const MenuItem = ({ children, ...props }: Props) => (
+  <AnimatedTouchable style={styles.root} {...props}>
+    <Text style={styles.text}>{children}</Text>
+    <MaterialCommunityIcons color={Colors.light.text} name="chevron-right" size={22} />
+  </AnimatedTouchable>
+);
 
 const styles = StyleSheet.create({
   root: {
-    paddingVertical: 16,
     alignItems: 'center',
     flexDirection: 'row',
+    paddingVertical: 16,
   },
   text: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
     color: Colors.light.text,
-  }
-})
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 24,
+  },
+});

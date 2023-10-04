@@ -10,4 +10,4 @@ export const Constants = {
   SearchHeight: SEARCH_HEIGHT,
   HeaderOpenHeight: HEIGHT_OPEN,
   InputHeight: INPUT_HEIGHT,
-}
+};

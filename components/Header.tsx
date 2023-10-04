@@ -1,13 +1,19 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
-import React from 'react'
-import { SafeAreaView as SafeAreaViewBase } from 'react-native-safe-area-context';
-import Colors from '../constants/Colors';
-import { RouteProp, useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
-import AnimatedTouchable from './AnimatedTouchable';
-import Animated, { AnimatedStyleProp } from 'react-native-reanimated';
-import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { SafeAreaView as SafeAreaViewBase } from 'react-native-safe-area-context';
+
+import Colors from 'constants/Colors';
+
+import { AnimatedTouchable } from './AnimatedTouchable';
+
+import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import type { RouteProp } from '@react-navigation/native';
+import type { StackNavigationOptions } from '@react-navigation/stack';
+import type { ViewStyle } from 'react-native';
+import type { AnimatedStyleProp } from 'react-native-reanimated';
 
 type Props = {
   route: RouteProp<any>;
@@ -23,7 +29,7 @@ type Props = {
 
 const SafeAreaView = Animated.createAnimatedComponent(SafeAreaViewBase);
 
-export default function Header({ 
+export const Header = ({
   route,
   hasBorder,
   children,
@@ -31,8 +37,8 @@ export default function Header({
   style,
   options,
   containerStyle,
-  useAbsolute = true
-}: Props) {
+  useAbsolute = true,
+}: Props) => {
   const { goBack } = useNavigation();
   const renderBody = () => {
     if (!children) {
@@ -40,64 +46,67 @@ export default function Header({
     }
 
     return children;
-  }
+  };
 
   return (
     <SafeAreaView edges={['top']} style={[styles.root, style]}>
       <Animated.View style={[styles.container, hasBorder && styles.hasBorder, containerStyle]}>
         {renderBody()}
 
-          <View style={[StyleSheet.absoluteFill, styles.buttonRow, !useAbsolute && { zIndex: -1 }]}>
-            <View style={styles.buttonWrap}>
-              {canGoBack && (
-                <AnimatedTouchable style={styles.button} onPress={() => goBack()}>
-                  <MaterialIcons name="arrow-back-ios" size={18} color={Colors.light.text} />
-                  <Text style={styles.buttonText}>Back</Text>
-                </AnimatedTouchable>
-              )}
-            </View>
-
-            <View style={styles.buttonWrap} />
+        <View style={[StyleSheet.absoluteFill, styles.buttonRow, !useAbsolute && styles.zIndex]}>
+          <View style={styles.buttonWrap}>
+            {canGoBack && (
+              <AnimatedTouchable onPress={() => goBack()} style={styles.button}>
+                <MaterialIcons color={Colors.light.text} name="arrow-back-ios" size={18} />
+                <Text style={styles.buttonText}>Back</Text>
+              </AnimatedTouchable>
+            )}
           </View>
+
+          <View style={styles.buttonWrap} />
+        </View>
       </Animated.View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  root: {
-    backgroundColor: Colors.light.background,
+  button: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+  },
+  buttonText: {
+    color: Colors.light.text,
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  buttonWrap: {
+    justifyContent: 'center',
   },
   container: {
-    position: 'relative',
-    height: 48,
-    paddingHorizontal: 16,
     alignItems: 'center',
+    height: 48,
     justifyContent: 'center',
+    paddingHorizontal: 16,
+    position: 'relative',
   },
   hasBorder: {
     borderBottomWidth: 1,
     borderColor: Colors.light.border,
   },
+  root: {
+    backgroundColor: Colors.light.background,
+  },
   title: {
-    fontWeight: '600',
     fontSize: 18,
+    fontWeight: '600',
     lineHeight: 24,
   },
-  buttonRow: {
-    flexDirection: 'row',
+  zIndex: {
+    zIndex: -1,
   },
-  buttonWrap: {
-    justifyContent: 'center',
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,    
-  },
-  buttonText: {
-    fontWeight: '400',
-    fontSize: 16,
-    color: Colors.light.text,
-  }
-})
+});

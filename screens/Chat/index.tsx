@@ -1,24 +1,26 @@
-import { Image, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
-import Colors from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ParamListBase } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { SharedElement } from 'react-navigation-shared-element';
-import MessageList from '../../components/MessageList';
-import Header from '../../components/Header';
-import AnimatedTouchable from '../../components/AnimatedTouchable';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SharedElement } from 'react-navigation-shared-element';
+
+import { AnimatedTouchable } from 'components/AnimatedTouchable';
+import { Header } from 'components/Header';
+import { MessageList } from 'components/MessageList';
+import Colors from 'constants/Colors';
+
+import type { ParamListBase } from '@react-navigation/native';
+import type { StackScreenProps } from '@react-navigation/stack';
 
 type RouteParams = ParamListBase & {
   id: number;
   avatar: string;
   name: string;
   lastMessage: string;
-}
+};
 
-const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
+export const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
   const { id, avatar, name, lastMessage } = route.params as RouteParams;
   const [text, setText] = useState('');
   const insets = useSafeAreaInsets();
@@ -30,16 +32,16 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
 
     return {
       backgroundColor: withTiming(color, { duration: 250 }),
-      opacity: withTiming(text.length ? 1 : .5, { duration: 250 })
+      opacity: withTiming(text.length ? 1 : 0.5, { duration: 250 }),
     };
   });
 
   return (
     <>
-      <Header hasBorder canGoBack route={route}>
+      <Header canGoBack hasBorder route={route}>
         <AnimatedTouchable
-          style={styles.info}
           onPress={() => navigation.navigate('ContactDetails', { avatar, id, name })}
+          style={styles.info}
         >
           <SharedElement id={`contact.${id}.avatar`}>
             <Image source={{ uri: avatar as string }} style={styles.avatar} />
@@ -51,110 +53,92 @@ const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
         </AnimatedTouchable>
       </Header>
 
-      <KeyboardAvoidingView behavior="padding" style={styles.root} keyboardVerticalOffset={-insets.bottom}>
-        <View style={{ flex: 1 }}>
-          <MessageList lastMessage={lastMessage} chatId={id} />
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={-insets.bottom}
+        style={styles.root}
+      >
+        <View style={styles.flex}>
+          <MessageList chatId={id} lastMessage={lastMessage} />
 
           <View style={[styles.footer, { paddingBottom: 8 + insets.bottom }]}>
-            <AnimatedTouchable style={styles.attach} onPress={onSendPressed}>
-              <MaterialIcons name="attach-file" color={Colors.light.secondary} size={24} />
+            <AnimatedTouchable onPress={onSendPressed} style={styles.attach}>
+              <MaterialIcons color={Colors.light.secondary} name="attach-file" size={24} />
             </AnimatedTouchable>
 
             <TextInput
               multiline
-              style={styles.input}
-              placeholder="Message"
-              value={text}
               onChangeText={setText}
+              placeholder="Message"
+              style={styles.input}
+              value={text}
             />
 
-            <AnimatedTouchable style={[styles.send, sendStyle]} onPress={onSendPressed}>
-              <MaterialIcons name="arrow-upward" color={Colors.dark.text} size={24} />
+            <AnimatedTouchable onPress={onSendPressed} style={[styles.send, sendStyle]}>
+              <MaterialIcons color={Colors.dark.text} name="arrow-upward" size={24} />
             </AnimatedTouchable>
           </View>
         </View>
       </KeyboardAvoidingView>
     </>
-  )
-}
-
-export default ChatScreen
+  );
+};
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: Colors.light.background,
-  },
-  header: {
-    position: 'relative',
-    flexDirection: 'row',
+  attach: {
     alignItems: 'center',
+    height: 32,
     justifyContent: 'center',
-    height: 44,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.light.border,
-  },
-  backButtonWrap: {
-    position: 'absolute',
-    left: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    zIndex: 1,
-  },
-  backButtonText: {
-    fontWeight: '400',
-    fontSize: 16,
-    color: Colors.light.text,
-  },
-  info: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    zIndex: 1,
+    width: 32,
   },
   avatar: {
-    width: 32,
-    height: 32,
     borderRadius: 32,
+    height: 32,
     marginRight: 8,
+    width: 32,
   },
-  name: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.light.text,
+  flex: {
+    flex: 1,
   },
   footer: {
-    flexDirection: 'row',
-    borderTopWidth: 1,
-    borderColor: Colors.light.border,
-    backgroundColor: Colors.light.window,
-    padding: 8,
     alignItems: 'flex-end',
+    backgroundColor: Colors.light.window,
+    borderColor: Colors.light.border,
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    padding: 8,
+  },
+  info: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    zIndex: 1,
   },
   input: {
+    backgroundColor: Colors.light.background,
+    borderRadius: 16,
     flex: 1,
     fontSize: 16,
     lineHeight: 18,
     marginHorizontal: 8,
+    maxHeight: 200,
+    paddingBottom: 7,
     paddingHorizontal: 8,
     paddingTop: 7,
-    paddingBottom: 7,
-    backgroundColor: Colors.light.background,
-    borderRadius: 16,
-    maxHeight: 200,
   },
-  attach: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+  name: {
+    color: Colors.light.text,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  root: {
+    backgroundColor: Colors.light.background,
+    flex: 1,
   },
   send: {
-    height: 32,
-    width: 32,
-    borderRadius: 32,
     alignItems: 'center',
+    borderRadius: 32,
+    height: 32,
     justifyContent: 'center',
+    width: 32,
   },
-})
+});
