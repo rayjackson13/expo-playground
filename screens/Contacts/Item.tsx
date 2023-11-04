@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { SharedElement } from 'react-navigation-shared-element';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { AnimatedTouchable } from 'components/AnimatedTouchable';
 import Colors from 'constants/Colors';
@@ -26,15 +26,15 @@ export const ContactListItem = ({ id, avatar, name }: Props) => {
 
   return (
     <AnimatedTouchable onPress={onPress} style={styles.listItem}>
-      <SharedElement id={`contact.${id}.avatar`}>
-        <Image source={{ uri: avatar }} style={styles.listItemImage} />
-      </SharedElement>
+      <Animated.Image
+        sharedTransitionTag={'contacts.img'}
+        source={{ uri: avatar }}
+        style={styles.listItemImage}
+      />
 
-      <View style={styles.listItemBody}>
-        <SharedElement id={`contact.${id}.name`}>
-          <Text style={styles.listItemName}>{name}</Text>
-        </SharedElement>
-      </View>
+      <Animated.View sharedTransitionTag="contacts.text" style={styles.listItemBody}>
+        <Text style={styles.listItemName}>{name}</Text>
+      </Animated.View>
     </AnimatedTouchable>
   );
 };

@@ -1,6 +1,5 @@
-import { CardStyleInterpolators } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
 import { Header } from 'components/Header';
 import { ChatScreen } from 'screens/Chat';
@@ -10,23 +9,16 @@ import { ListPerformance } from 'screens/ListPerformance';
 import { PhotoPreviewScreen } from 'screens/PhotoPreview';
 
 import { BottomTabNavigator } from './BottomTabNavigator';
-import { TransitionConfig } from '../helpers/TransitionConfig';
 
 import type { StackParamList } from 'constants/types';
 
-const Stack = createSharedElementStackNavigator<StackParamList>();
+const Stack = createNativeStackNavigator<StackParamList>();
 
 export const RootNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         header: (props) => <Header canGoBack hasBorder {...props} />,
-        cardOverlayEnabled: false,
-        cardShadowEnabled: true,
-        transitionSpec: {
-          open: TransitionConfig,
-          close: TransitionConfig,
-        },
       }}
     >
       <Stack.Screen component={BottomTabNavigator} name="Root" options={{ headerShown: false }} />
@@ -34,26 +26,6 @@ export const RootNavigator = () => {
         component={ContactDetailsScreen}
         name="ContactDetails"
         options={{ headerShown: false }}
-        sharedElements={(route) => {
-          const { id } = route.params;
-
-          return [
-            `contact.${id}.avatar`,
-            {
-              id: 'contact.gradient',
-              animation: 'fade',
-            },
-            {
-              id: `contact.${id}.name`,
-              animation: 'fade-in',
-              resize: 'clip',
-            },
-            {
-              id: 'contact.goBack',
-              animation: 'fade',
-            },
-          ];
-        }}
       />
       <Stack.Screen component={ChatScreen} name="Chat" options={{ headerShown: false }} />
       <Stack.Screen
@@ -62,10 +34,8 @@ export const RootNavigator = () => {
         options={{
           presentation: 'transparentModal',
           headerShown: false,
-          cardOverlayEnabled: false,
-          cardShadowEnabled: false,
           gestureEnabled: false,
-          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+          animation: 'fade',
         }}
       />
       <Stack.Screen

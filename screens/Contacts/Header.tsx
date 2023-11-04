@@ -3,16 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Header } from 'components/Header';
-import Colors from 'constants/Colors';
 
 import { ContactSearch } from './Search';
 import { Constants } from './constants';
 
-import type { RouteProp } from '@react-navigation/native';
+import type { ParamListBase, RouteProp } from '@react-navigation/native';
 import type { SharedValue } from 'react-native-reanimated';
 
 type Props = {
-  route: RouteProp<{}, never>;
+  route: RouteProp<ParamListBase, string>;
   searchText: string;
   setSearchText: (text: string) => unknown;
   scrollOffset: SharedValue<number>;

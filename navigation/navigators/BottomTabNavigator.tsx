@@ -2,7 +2,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
 import { AnimatedTouchable } from 'components/AnimatedTouchable';
 import { Header } from 'components/Header';
@@ -11,38 +10,14 @@ import { ContactsScreen } from 'screens/Contacts';
 import { MenuTab } from 'screens/Menu';
 import { MessagesScreen } from 'screens/Messages';
 
-import { TransitionConfig } from '../helpers/TransitionConfig';
-
 import type { TabParamList } from 'constants/types';
-import type { SharedElementSceneComponent } from 'react-navigation-shared-element';
 
 const Tabs = createBottomTabNavigator<TabParamList>();
-
-const wrapInSharedElementStack = (Screen: SharedElementSceneComponent<any>, name: string) => {
-  const SharedStack = createSharedElementStackNavigator();
-  return () => (
-    <SharedStack.Navigator
-      initialRouteName={name}
-      screenOptions={{
-        headerShown: false,
-        transitionSpec: {
-          open: TransitionConfig,
-          close: TransitionConfig,
-        },
-      }}
-    >
-      <SharedStack.Screen component={Screen} name={name} />
-    </SharedStack.Navigator>
-  );
-};
-
-const ContactsTab = wrapInSharedElementStack(ContactsScreen, 'ContactsScreen');
-const MessagesTab = wrapInSharedElementStack(MessagesScreen, 'MessagesScreen');
 
 export const BottomTabNavigator = () => {
   return (
     <Tabs.Navigator
-      initialRouteName="Contacts"
+      // initialRouteName="Contacts"
       screenOptions={{
         header: (props) => <Header hasBorder {...props} />,
         tabBarShowLabel: false,
@@ -50,7 +25,7 @@ export const BottomTabNavigator = () => {
       }}
     >
       <Tabs.Screen
-        component={ContactsTab}
+        component={ContactsScreen}
         name="Contacts"
         options={{
           headerShown: false,
@@ -59,7 +34,7 @@ export const BottomTabNavigator = () => {
         }}
       />
       <Tabs.Screen
-        component={MessagesTab}
+        component={MessagesScreen}
         name="Messages"
         options={{
           header: (props) => <Header hasBorder {...props} />,

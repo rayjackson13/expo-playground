@@ -11,11 +11,12 @@ import { ContactListItem } from './Item';
 import { Tip } from './Tip';
 import { Constants } from './constants';
 
+import type { ParamListBase } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { Contact } from 'constants/types';
 import type { ListRenderItem, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
-export const ContactsScreen = ({ route }: StackScreenProps<{}>) => {
+export const ContactsScreen = ({ route }: StackScreenProps<ParamListBase>) => {
   const [searchText, setSearchText] = useState('');
   const scrollOffset = useSharedValue(0);
   const tipVisible = useSharedValue(true);

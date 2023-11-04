@@ -14,13 +14,14 @@ import type { StackScreenProps } from '@react-navigation/stack';
 
 type RouteParams = ParamListBase & {
   uri: string;
+  sharedTransitionTag: string;
 };
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SWIPE_THRESHOLD = SCREEN_HEIGHT / 4;
 
 export const PhotoPreviewScreen = ({ route, navigation }: StackScreenProps<RouteParams>) => {
-  const { uri } = route.params as RouteParams;
+  const { uri, sharedTransitionTag } = route.params as RouteParams;
   const position = useSharedValue(0);
   const opacity = useDerivedValue(() => {
     const value = Math.abs(position.value) / SWIPE_THRESHOLD;
@@ -76,7 +77,12 @@ export const PhotoPreviewScreen = ({ route, navigation }: StackScreenProps<Route
         <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]} />
 
         <Animated.View style={[StyleSheet.absoluteFill, modalStyle]}>
-          <Image resizeMode="contain" source={{ uri }} style={styles.image} />
+          <Animated.Image
+            resizeMode="contain"
+            sharedTransitionTag={sharedTransitionTag}
+            source={{ uri }}
+            style={styles.image}
+          />
         </Animated.View>
       </View>
     </GestureDetector>

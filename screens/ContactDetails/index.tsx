@@ -3,9 +3,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { setStatusBarStyle } from 'expo-status-bar';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SharedElement } from 'react-navigation-shared-element';
 
 import { AnimatedTouchable } from 'components/AnimatedTouchable';
 import Colors from 'constants/Colors';
@@ -24,6 +24,7 @@ export const ContactDetailsScreen = ({ route, navigation }: StackScreenProps<Rou
   const insets = useSafeAreaInsets();
 
   const { id, avatar, name } = route.params as RouteParams;
+  console.log(`contacts-img-${id}`);
 
   useFocusEffect(() => {
     setStatusBarStyle('inverted');
@@ -35,37 +36,35 @@ export const ContactDetailsScreen = ({ route, navigation }: StackScreenProps<Rou
   return (
     <SafeAreaView edges={['bottom']} style={styles.root}>
       <AnimatedTouchable
-        onPress={() => navigation.navigate('PhotoPreview', { uri: avatar })}
+        onPress={() =>
+          navigation.navigate('PhotoPreview', { uri: avatar, sharedTransitionTag: 'contacts.img' })
+        }
         style={styles.avatarWrap}
       >
-        <SharedElement id={`contact.${id}.avatar`} style={StyleSheet.absoluteFill}>
-          <Image source={{ uri: avatar as string }} style={[StyleSheet.absoluteFill]} />
-        </SharedElement>
+        <Animated.Image
+          sharedTransitionTag={'contacts.img'}
+          source={{ uri: avatar }}
+          style={[StyleSheet.absoluteFill]}
+        />
 
-        <SharedElement id={'contact.gradient'} style={StyleSheet.absoluteFill}>
-          <LinearGradient
-            colors={['rgba(0,0,0,.2)', 'transparent', 'rgba(0,0,0,.3)']}
-            style={StyleSheet.absoluteFill}
-          />
-        </SharedElement>
+        <LinearGradient
+          colors={['rgba(0,0,0,.2)', 'transparent', 'rgba(0,0,0,.3)']}
+          style={StyleSheet.absoluteFill}
+        />
 
-        <View style={styles.head}>
-          <SharedElement id={`contact.${id}.name`}>
-            <Text style={styles.name}>{name}</Text>
-          </SharedElement>
-        </View>
+        <Animated.View sharedTransitionTag="contacts.text" style={styles.head}>
+          <Text style={styles.name}>{name}</Text>
+        </Animated.View>
       </AnimatedTouchable>
 
       <AnimatedTouchable
         onPress={() => navigation.goBack()}
         style={[styles.backButton, { top: insets.top }]}
       >
-        <SharedElement id={'contact.goBack'}>
-          <View style={styles.backButtonWrap}>
-            <MaterialIcons color={Colors.dark.text} name="chevron-left" size={32} />
-            <Text style={styles.backButtonText}>Back</Text>
-          </View>
-        </SharedElement>
+        <View style={styles.backButtonWrap}>
+          <MaterialIcons color={Colors.dark.text} name="chevron-left" size={32} />
+          <Text style={styles.backButtonText}>Back</Text>
+        </View>
       </AnimatedTouchable>
     </SafeAreaView>
   );

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SharedElement } from 'react-navigation-shared-element';
 
 import { AnimatedTouchable } from 'components/AnimatedTouchable';
 import { Header } from 'components/Header';
@@ -43,13 +42,9 @@ export const ChatScreen = ({ route, navigation }: StackScreenProps<RouteParams>)
           onPress={() => navigation.navigate('ContactDetails', { avatar, id, name })}
           style={styles.info}
         >
-          <SharedElement id={`contact.${id}.avatar`}>
-            <Image source={{ uri: avatar as string }} style={styles.avatar} />
-          </SharedElement>
+          <Image source={{ uri: avatar as string }} style={styles.avatar} />
 
-          <SharedElement id={`contact.${id}.name`}>
-            <Text style={styles.name}>{name}</Text>
-          </SharedElement>
+          <Text style={styles.name}>{name}</Text>
         </AnimatedTouchable>
       </Header>
 

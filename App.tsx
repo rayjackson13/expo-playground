@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Navigation from './navigation';
 import { SplashScreen } from './screens/Splash';
@@ -14,7 +15,10 @@ const App = () => {
   return (
     <>
       <StatusBar animated style="dark" />
-      <Navigation />
+
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Navigation />
+      </GestureHandlerRootView>
     </>
   );
 };

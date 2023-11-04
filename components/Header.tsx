@@ -11,6 +11,7 @@ import { AnimatedTouchable } from './AnimatedTouchable';
 
 import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import type { RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import type { StackNavigationOptions } from '@react-navigation/stack';
 import type { ViewStyle } from 'react-native';
 import type { AnimatedStyleProp } from 'react-native-reanimated';
@@ -21,7 +22,7 @@ type Props = {
   children?: React.ReactNode;
   canGoBack?: boolean;
   headerTitle?: string;
-  options?: BottomTabNavigationOptions | StackNavigationOptions;
+  options?: BottomTabNavigationOptions | StackNavigationOptions | NativeStackNavigationOptions;
   style?: AnimatedStyleProp<ViewStyle>;
   containerStyle?: AnimatedStyleProp<ViewStyle> | AnimatedStyleProp<ViewStyle>[];
   useAbsolute?: boolean;
