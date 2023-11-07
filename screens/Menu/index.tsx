@@ -35,6 +35,11 @@ const items: ItemType[] = [
     screen: 'ListPerformance',
     params: {},
   },
+  {
+    title: 'TODOs (state-based)',
+    screen: 'OldTodos',
+    params: {},
+  },
 ];
 
 export const MenuTab = ({ navigation }: Props) => {

@@ -7,6 +7,7 @@ import { ContactDetailsScreen } from 'screens/ContactDetails';
 import { Game2048 } from 'screens/Game2048';
 import { ListPerformance } from 'screens/ListPerformance';
 import { PhotoPreviewScreen } from 'screens/PhotoPreview';
+import { OldTodos } from 'screens/Todos/Version1';
 
 import { BottomTabNavigator } from './BottomTabNavigator';
 
@@ -49,6 +50,11 @@ export const RootNavigator = () => {
         component={ListPerformance}
         name="ListPerformance"
         options={{ title: 'List Performance' }}
+      />
+      <Stack.Screen
+        component={OldTodos}
+        name="OldTodos"
+        options={{ title: 'TODOs (state-based)' }}
       />
     </Stack.Navigator>
   );
