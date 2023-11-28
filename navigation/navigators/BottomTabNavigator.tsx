@@ -17,7 +17,7 @@ const Tabs = createBottomTabNavigator<TabParamList>();
 export const BottomTabNavigator = () => {
   return (
     <Tabs.Navigator
-      // initialRouteName="Contacts"
+      initialRouteName="Menu"
       screenOptions={{
         header: (props) => <Header hasBorder {...props} />,
         tabBarShowLabel: false,

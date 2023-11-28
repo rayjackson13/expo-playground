@@ -2025,6 +2025,30 @@
     picocolors "^1.0.0"
     tslib "^2.6.0"
 
+"@preact/signals-core@^1.4.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@preact/signals-core/-/signals-core-1.5.0.tgz#5d34db4d3c242c93e1cefb7ce8b2d10ecbdbfa79"
+  integrity sha512-U2diO1Z4i1n2IoFgMYmRdHWGObNrcuTRxyNEn7deSq2cru0vj0583HYQZHsAqcs7FE+hQyX3mjIV7LAfHCvy8w==
+
+"@preact/signals-react-transform@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@preact/signals-react-transform/-/signals-react-transform-0.1.1.tgz#26367a21f4bedeaa8e24fefe93230e55cdde78c8"
+  integrity sha512-9vmyN0Gsp2AtM6hUXXRNjggU6JhpGYRGBNEr4l7kkhxzEEKEpepcgJY0cqWC1ibC97oDJFKaLXGjeBECRrP6zg==
+  dependencies:
+    "@babel/helper-module-imports" "^7.22.5"
+    "@babel/helper-plugin-utils" "^7.22.5"
+    "@preact/signals-react" "^1.3.7"
+    debug "^4.3.4"
+    use-sync-external-store "^1.2.0"
+
+"@preact/signals-react@^1.3.7":
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/@preact/signals-react/-/signals-react-1.3.7.tgz#85def89e91c1870d9512024e4a049a7ddd4bf1c3"
+  integrity sha512-tXNcq/lgvLO3gxI1ZWCJTKQevye6TYvxkmxAnYVthyLsi5LOAmCf/KzfsZwFRZv9q88B33kEMOujAy9Tsyn6Qg==
+  dependencies:
+    "@preact/signals-core" "^1.4.0"
+    use-sync-external-store "^1.2.0"
+
 "@react-native-community/cli-clean@11.3.7":
   version "11.3.7"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-clean/-/cli-clean-11.3.7.tgz#cb4c2f225f78593412c2d191b55b8570f409a48f"
@@ -7681,6 +7705,11 @@ postcss@~8.4.21:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+preact@^10.19.2:
+  version "10.19.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.19.2.tgz#841797620dba649aaac1f8be42d37c3202dcea8b"
+  integrity sha512-UA9DX/OJwv6YwP9Vn7Ti/vF80XL+YA5H2l7BpCtUr3ya8LWHFzpiO5R+N7dN16ujpIxhekRFuOOF82bXX7K/lg==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
@@ -9395,7 +9424,7 @@ use-latest-callback@^0.1.5:
   resolved "https://registry.yarnpkg.com/use-latest-callback/-/use-latest-callback-0.1.6.tgz#3fa6e7babbb5f9bfa24b5094b22939e1e92ebcf6"
   integrity sha512-VO/P91A/PmKH9bcN9a7O3duSuxe6M14ZoYXgA6a8dab8doWNdhiIHzEkX/jFeTTRBsX0Ubk6nG4q2NIjNsj+bg==
 
-use-sync-external-store@^1.0.0:
+use-sync-external-store@^1.0.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==

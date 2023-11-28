@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { ListItem } from './ListItem';
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const TodoList = ({ todos, toggleTodo }: Props) => {
-  const data = [...todos].sort((a, b) => b.id - a.id);
+  const data = useMemo(() => [...todos].sort((a, b) => b.id - a.id), [todos]);
 
   const keyExtractor = (item: TodoItem) => item.id.toString();
 

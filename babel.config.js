@@ -23,6 +23,7 @@ module.exports = function (api) {
         },
       ],
       'react-native-reanimated/plugin',
+      ['module:@preact/signals-react-transform'],
     ],
   };
 };

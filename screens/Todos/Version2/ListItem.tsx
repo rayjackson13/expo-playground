@@ -9,12 +9,12 @@ type Props = TodoItem & {
   onSelectItem: (id: number) => unknown;
 };
 
-export const ListItem = ({ id, isChecked, onSelectItem, title }: Props) => {
+export const ListItem = React.memo(({ id, isChecked, onSelectItem, title }: Props) => {
   console.log('ListItem render');
 
   const onPress = () => onSelectItem(id);
 
-  const textStyle = [styles.text, isChecked && styles.strikethrough];
+  const textStyle = useMemo(() => [styles.text, isChecked && styles.strikethrough], [isChecked]);
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.item}>
@@ -23,7 +23,7 @@ export const ListItem = ({ id, isChecked, onSelectItem, title }: Props) => {
       <Text style={textStyle}>{title}</Text>
     </TouchableOpacity>
   );
-};
+});
 
 const styles = StyleSheet.create({
   checkbox: {

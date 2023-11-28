@@ -7,7 +7,9 @@ import { ContactDetailsScreen } from 'screens/ContactDetails';
 import { Game2048 } from 'screens/Game2048';
 import { ListPerformance } from 'screens/ListPerformance';
 import { PhotoPreviewScreen } from 'screens/PhotoPreview';
-import { OldTodos } from 'screens/Todos/Version1';
+import { TodosV1 } from 'screens/Todos/Version1';
+import { TodosV2 } from 'screens/Todos/Version2';
+import { TodosV3 } from 'screens/Todos/Version3';
 
 import { BottomTabNavigator } from './BottomTabNavigator';
 
@@ -51,11 +53,13 @@ export const RootNavigator = () => {
         name="ListPerformance"
         options={{ title: 'List Performance' }}
       />
+      <Stack.Screen component={TodosV1} name="TodosV1" options={{ title: 'TODOs (state)' }} />
       <Stack.Screen
-        component={OldTodos}
-        name="OldTodos"
-        options={{ title: 'TODOs (state-based)' }}
+        component={TodosV2}
+        name="TodosV2"
+        options={{ title: 'TODOs (state, fixed)' }}
       />
+      <Stack.Screen component={TodosV3} name="TodosV3" options={{ title: 'TODOs (signals)' }} />
     </Stack.Navigator>
   );
 };

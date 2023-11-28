@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "jsc",
     "name": "expo-playground",
     "slug": "expo-playground",
     "version": "1.0.0",
