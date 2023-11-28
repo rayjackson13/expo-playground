@@ -9,7 +9,7 @@ type Props = {
   onSubmit: (item: TodoItem) => unknown;
 };
 
-export const AddTodoForm = React.memo(({ onSubmit }: Props) => {
+export const AddTodoForm = ({ onSubmit }: Props) => {
   console.log('AddTodoForm render');
 
   const [name, setName] = useState('');
@@ -46,7 +46,7 @@ export const AddTodoForm = React.memo(({ onSubmit }: Props) => {
       </TouchableOpacity>
     </View>
   );
-});
+};
 
 const styles = StyleSheet.create({
   button: {
