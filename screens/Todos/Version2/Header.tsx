@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const TodosHeader = ({ unfinishedCount }: Props) => {
-  console.log('TodosHeader render')
+  console.log('TodosHeader render');
 
   return (
     <View style={styles.root}>
