@@ -2,23 +2,17 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { ListItem } from './ListItem';
+import { todoList } from './signals';
 
 import type { TodoItem } from '../declarations';
 import type { ListRenderItem } from 'react-native';
 
-type Props = {
-  todos: TodoItem[];
-  toggleTodo: (id: number) => unknown;
-};
-
-export const TodoList = ({ todos, toggleTodo }: Props) => {
-  const data = [...todos].sort((a, b) => b.id - a.id);
+export const TodoList = () => {
+  const data = [...todoList.value].sort((a, b) => b.id - a.id);
 
   const keyExtractor = (item: TodoItem) => item.id.toString();
 
-  const renderItem: ListRenderItem<TodoItem> = ({ item }) => (
-    <ListItem {...item} onSelectItem={toggleTodo} />
-  );
+  const renderItem: ListRenderItem<TodoItem> = ({ item }) => <ListItem {...item} />;
 
   return (
     <FlatList

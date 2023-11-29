@@ -3,14 +3,14 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 
 import Colors from 'constants/Colors';
 
+import { todoList } from './signals';
+
 import type { TodoItem } from '../declarations';
 
-type Props = {
-  onSubmit: (item: TodoItem) => unknown;
-};
-
-export const AddTodoForm = ({ onSubmit }: Props) => {
-  console.log('AddTodoForm render');
+export const AddTodoForm = () => {
+  const onSubmit = (item: TodoItem) => {
+    todoList.value = [...todoList.value, item];
+  };
 
   const [name, setName] = useState('');
 

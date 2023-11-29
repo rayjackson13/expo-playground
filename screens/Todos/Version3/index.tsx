@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Colors from 'constants/Colors';
@@ -6,31 +6,21 @@ import Colors from 'constants/Colors';
 import { AddTodoForm } from './Form';
 import { TodosHeader } from './Header';
 import { TodoList } from './List';
-
-import type { TodoItem } from '../declarations';
+import { todoList } from './signals';
 
 export const TodosV3 = (): JSX.Element => {
-  const [todoList, setTodoList] = useState<TodoItem[]>([]);
-
-  const onSubmit = (item: TodoItem) => setTodoList((list) => [...list, item]);
-
-  const toggleTodo = (id: number) =>
-    setTodoList((list) =>
-      list.map((item) => (item.id !== id ? item : { ...item, isChecked: !item.isChecked })),
-    );
-
-  const unfinishedCount = todoList.filter((item) => !item.isChecked).length;
+  const unfinishedCount = todoList.value.filter((item) => !item.isChecked).length;
 
   return (
     <View style={styles.layout}>
       {/* Form to add more todos */}
-      <AddTodoForm onSubmit={onSubmit} />
+      <AddTodoForm />
 
       {/* Header with unfinished count */}
       <TodosHeader unfinishedCount={unfinishedCount} />
 
       {/* Actual list */}
-      <TodoList todos={todoList} toggleTodo={toggleTodo} />
+      <TodoList />
     </View>
   );
 };

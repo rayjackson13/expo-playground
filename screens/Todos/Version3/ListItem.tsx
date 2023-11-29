@@ -3,16 +3,16 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Colors from 'constants/Colors';
 
+import { toggleTodo } from './signals';
+
 import type { TodoItem } from '../declarations';
 
-type Props = TodoItem & {
-  onSelectItem: (id: number) => unknown;
-};
+type Props = TodoItem;
 
-export const ListItem = ({ id, isChecked, onSelectItem, title }: Props) => {
+export const ListItem = React.memo(({ id, isChecked, title }: Props) => {
   console.log('ListItem render');
 
-  const onPress = () => onSelectItem(id);
+  const onPress = () => toggleTodo(id);
 
   const textStyle = [styles.text, isChecked && styles.strikethrough];
 
@@ -23,7 +23,7 @@ export const ListItem = ({ id, isChecked, onSelectItem, title }: Props) => {
       <Text style={textStyle}>{title}</Text>
     </TouchableOpacity>
   );
-};
+});
 
 const styles = StyleSheet.create({
   checkbox: {
